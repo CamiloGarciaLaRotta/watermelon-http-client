@@ -16,5 +16,10 @@ jobs:
       - name: Execute a dummy query
         id: query
         uses: ./
+        with:
+          query: |
+            some
+            multiline
+            query
       - name: Print the query result
         run: echo ${{ steps.query.outputs.result }}
