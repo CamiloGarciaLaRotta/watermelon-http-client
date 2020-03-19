@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Get the sources
         uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
       - name: Execute a dummy query
         id: query
         uses: ./
