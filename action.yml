@@ -1,9 +1,16 @@
-name: 'GraphQL client'
-description: 'GitHub Action that allows to specify a server endpoint & GraphQL query to execute.'
-author: 'Camilo Garcia La Rotta'
+name: "GraphQL client"
+description: "GitHub Action that allows to specify a server endpoint & GraphQL query to execute."
+author: "Camilo Garcia La Rotta"
+inputs:
+  query:
+    description: GraphQL query to execute
+    required: true
+  url:
+    description: Endpoint to query
+    default: "https://api.github.com/graphql"
 outputs:
   result:
-    description: 'the query result'
+    description: The query result
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"

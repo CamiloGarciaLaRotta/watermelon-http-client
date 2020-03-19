@@ -76,14 +76,25 @@ const core = __importStar(__webpack_require__(470));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const url = core.getInput('url');
+            const query = core.getInput('query', { required: true });
+            validateQuery(query);
+            core.info(`url:\n${url}`);
+            core.info(`query:\n${query}`);
             core.setOutput('result', 'dummy output');
         }
         catch (error) {
+            core.error(error);
             core.setFailed(error.message);
         }
     });
 }
 exports.run = run;
+function validateQuery(query) {
+    if (!query || query.trim().length === 0) {
+        throw new Error('"query" is a required parameter');
+    }
+}
 run();
 
 
