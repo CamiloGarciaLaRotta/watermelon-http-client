@@ -1,10 +1,9 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
-inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+name: 'GraphQL client'
+description: 'GitHub Action that allows to specify a server endpoint & GraphQL query to execute.'
+author: 'Camilo Garcia La Rotta'
+outputs:
+  result:
+    description: 'the query result'
 runs:
   using: 'node12'
   main: 'dist/index.js'
