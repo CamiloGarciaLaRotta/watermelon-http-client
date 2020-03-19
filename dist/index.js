@@ -78,7 +78,6 @@ function run() {
         try {
             const url = core.getInput('url');
             const query = core.getInput('query', { required: true });
-            validateQuery(query);
             core.info(`url:\n${url}`);
             core.info(`query:\n${query}`);
             core.setOutput('result', 'dummy output');
@@ -90,11 +89,6 @@ function run() {
     });
 }
 exports.run = run;
-function validateQuery(query) {
-    if (!query || query.trim().length === 0) {
-        throw new Error('"query" is a required parameter');
-    }
-}
 run();
 
 
