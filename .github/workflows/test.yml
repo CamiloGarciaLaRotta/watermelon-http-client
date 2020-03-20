@@ -21,6 +21,7 @@ jobs:
             some
             multiline
             query
-      - name: Print the query result
+      - name: Print the query status
         run: echo ${{ steps.query.outputs.status }}
+      - name: Print the query result
         run: echo ${{ steps.query.outputs.result }}
