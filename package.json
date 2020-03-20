@@ -25,7 +25,10 @@
   "author": "Camilo Garcia La Rotta",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0"
+    "@actions/core": "^1.2.0",
+    "@types/jest-when": "^2.7.0",
+    "axios": "^0.19.2",
+    "jest-when": "^2.7.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
