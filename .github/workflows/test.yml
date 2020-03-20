@@ -22,4 +22,5 @@ jobs:
             multiline
             query
       - name: Print the query result
+        run: echo ${{ steps.query.outputs.status }}
         run: echo ${{ steps.query.outputs.result }}

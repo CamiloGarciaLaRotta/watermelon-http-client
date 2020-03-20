@@ -9,8 +9,10 @@ inputs:
     description: Endpoint to query
     default: "https://api.github.com/graphql"
 outputs:
+  status:
+    description: The status of the HTTP request
   result:
-    description: The query result
+    description: The raw query result body
 runs:
   using: "node12"
   main: "dist/index.js"
