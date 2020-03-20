@@ -1,8 +1,18 @@
 import * as core from '@actions/core'
 import {run} from '../src/main'
+import axios from 'axios'
+import {when} from 'jest-when'
+
+jest.mock('axios')
 
 describe('when running the action with valid inputs', () => {
+  const fakeGet = axios.get as jest.MockedFunction<typeof axios.get>
+
   beforeEach(() => {
+    when(fakeGet)
+      .calledWith(expect.anything())
+      .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
+
     jest.resetModules()
     process.env['INPUT_URL'] = 'https://foo_bar.com/api'
     process.env['INPUT_QUERY'] = `a
@@ -21,11 +31,16 @@ describe('when running the action with valid inputs', () => {
     await run()
 
     expect(infoMock.mock.calls).toEqual([
-      ['url:\nhttps://foo_bar.com/api'],
+      ['url: https://foo_bar.com/api'],
       [
         `query:\na
       multiline
       query`
+      ],
+      ['response status: 200'],
+      [
+        `response body:
+{"some":"JSON"}`
       ]
     ])
   })
@@ -35,6 +50,7 @@ describe('when running the action with valid inputs', () => {
 
     await run()
 
+    expect(fakeSetOutput).toBeCalledWith('status', expect.anything())
     expect(fakeSetOutput).toBeCalledWith('result', expect.anything())
   })
 })
