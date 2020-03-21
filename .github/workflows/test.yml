@@ -8,14 +8,6 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        include:
-        - os: macos-latest
-          CMD: echo
-        - os: ubuntu-latest
-          CMD: echo
-        - os: windows-latest
-          CMD: Write-Output
-
     steps:
       - name: Get the sources
         uses: actions/checkout@v1
@@ -30,6 +22,8 @@ jobs:
             multiline
             query
       - name: Print the query status
-        run: ${{ matrix.CMD }} ${{ steps.query.outputs.status }}
+        run: echo ${{ steps.query.outputs.status }}
+        shell: bash
       - name: Print the query result
-        run: ${{ matrix.CMD }} ${{ steps.query.outputs.result }}
+        run: echo "${{ steps.query.outputs.result }}"
+        shell: bash
