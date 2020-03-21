@@ -6,18 +6,17 @@ import {when} from 'jest-when'
 jest.mock('axios')
 
 describe('when running the action with valid inputs', () => {
-  const fakeGet = axios.get as jest.MockedFunction<typeof axios.get>
+  const fakePost = axios.post as jest.MockedFunction<typeof axios.post>
 
   beforeEach(() => {
-    when(fakeGet)
-      .calledWith(expect.anything())
+    when(fakePost)
+      .calledWith('https://foo_bar.com/api', '{ a: "payload" }')
       .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
 
     jest.resetModules()
     process.env['INPUT_URL'] = 'https://foo_bar.com/api'
-    process.env['INPUT_QUERY'] = `a
-      multiline
-      query`
+    process.env['INPUT_METHOD'] = 'post'
+    process.env['INPUT_QUERY'] = '{ a: "payload" }'
   })
 
   afterEach(() => {
@@ -32,16 +31,10 @@ describe('when running the action with valid inputs', () => {
 
     expect(infoMock.mock.calls).toEqual([
       ['url: https://foo_bar.com/api'],
-      [
-        `query:\na
-      multiline
-      query`
-      ],
+      ['method: post'],
+      ['query:\n{ a: "payload" }'],
       ['response status: 200'],
-      [
-        `response body:
-{"some":"JSON"}`
-      ]
+      ['response body:\n{"some":"JSON"}']
     ])
   })
 
@@ -50,8 +43,8 @@ describe('when running the action with valid inputs', () => {
 
     await run()
 
-    expect(fakeSetOutput).toBeCalledWith('status', expect.anything())
-    expect(fakeSetOutput).toBeCalledWith('result', expect.anything())
+    expect(fakeSetOutput).toBeCalledWith('status', '200')
+    expect(fakeSetOutput).toBeCalledWith('response', '{"some":"JSON"}')
   })
 })
 
