@@ -25,5 +25,5 @@ jobs:
         run: echo ${{ steps.query.outputs.status }}
         shell: bash
       - name: Print the query result
-        run: echo "${{ steps.query.outputs.result }}"
+        run: echo ${{ steps.query.outputs.result }}
         shell: bash
