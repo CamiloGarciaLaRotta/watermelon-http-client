@@ -17,13 +17,16 @@ jobs:
         id: query
         uses: ./
         with:
+          url: 'https://countries.trevorblades.com/'
           query: |
-            some
-            multiline
-            query
+            {
+              country(code: "CO") {
+               name
+              }
+            }
       - name: Print the query status
         run: echo ${{ steps.query.outputs.status }}
         shell: bash
       - name: Print the query result
-        run: echo ${{ steps.query.outputs.result }}
+        run: echo ${{ steps.query.outputs.response }}
         shell: bash

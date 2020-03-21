@@ -11,8 +11,8 @@ inputs:
 outputs:
   status:
     description: The status of the HTTP request
-  result:
-    description: The raw query result body
+  response:
+    description: The raw query response body
 runs:
   using: "node12"
   main: "dist/index.js"
