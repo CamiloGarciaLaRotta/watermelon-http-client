@@ -5,6 +5,9 @@ inputs:
   query:
     description: GraphQL query to execute
     required: true
+  method:
+    description: HTTP method to use
+    default: get
   url:
     description: Endpoint to query
     default: "https://api.github.com/graphql"

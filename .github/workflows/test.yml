@@ -18,9 +18,10 @@ jobs:
         uses: ./
         with:
           url: 'https://countries.trevorblades.com/'
+          method: post
           query: |
             {
-              country(code: "CO") {
+              countries {
                name
               }
             }
