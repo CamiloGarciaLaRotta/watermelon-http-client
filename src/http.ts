@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-jest.mock('axios')
-
 export async function post(
   url: string,
   payload: string
