@@ -7,7 +7,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+        - os: macos-latest
+          CMD: echo
+        - os: ubuntu-latest
+          CMD: echo
+        - os: windows-latest
+          CMD: Write-Output
+
     steps:
       - name: Get the sources
         uses: actions/checkout@v1
@@ -22,6 +30,6 @@ jobs:
             multiline
             query
       - name: Print the query status
-        run: echo ${{ steps.query.outputs.status }}
+        run: ${{ matrix.CMD }} ${{ steps.query.outputs.status }}
       - name: Print the query result
-        run: echo ${{ steps.query.outputs.result }}
+        run: ${{ matrix.CMD }} ${{ steps.query.outputs.result }}
