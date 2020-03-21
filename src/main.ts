@@ -1,24 +1,25 @@
 import * as core from '@actions/core'
-import axios from 'axios'
+import {post} from './http'
 
 export async function run(): Promise<void> {
   try {
     const url: string = core.getInput('url')
+    const method: string = core.getInput('method')
     const query: string = core.getInput('query', {required: true})
 
     core.info(`url: ${url}`)
+    core.info(`method: ${method}`)
     core.info(`query:\n${query}`)
 
-    const response = await axios.get(
-      'https://jsonplaceholder.typicode.com/todos/1'
-    )
-    const data = response.data as Object
+    const [status, rawResponse] = await post(url, query)
 
-    core.info(`response status: ${response.status}`)
-    core.info(`response body:\n${JSON.stringify(data)}`)
+    const response = JSON.stringify(rawResponse)
 
-    core.setOutput('status', `${response.status}`)
-    core.setOutput('result', `${JSON.stringify(data)}`)
+    core.info(`response status: ${status}`)
+    core.info(`response body:\n${response}`)
+
+    core.setOutput('status', `${status}`)
+    core.setOutput('response', `${response}`)
   } catch (error) {
     core.error(error)
     core.setFailed(error.message)

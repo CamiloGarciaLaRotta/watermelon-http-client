@@ -849,25 +849,24 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
-const axios_1 = __importDefault(__webpack_require__(53));
+const http_1 = __webpack_require__(617);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const url = core.getInput('url');
+            const method = core.getInput('method');
             const query = core.getInput('query', { required: true });
             core.info(`url: ${url}`);
+            core.info(`method: ${method}`);
             core.info(`query:\n${query}`);
-            const response = yield axios_1.default.get('https://jsonplaceholder.typicode.com/todos/1');
-            const data = response.data;
-            core.info(`response status: ${response.status}`);
-            core.info(`response body:\n${JSON.stringify(data)}`);
-            core.setOutput('status', `${response.status}`);
-            core.setOutput('result', `${JSON.stringify(data)}`);
+            const [status, rawResponse] = yield http_1.post(url, query);
+            const response = JSON.stringify(rawResponse);
+            core.info(`response status: ${status}`);
+            core.info(`response body:\n${response}`);
+            core.setOutput('status', `${status}`);
+            core.setOutput('response', `${response}`);
         }
         catch (error) {
             core.error(error);
@@ -2634,6 +2633,42 @@ module.exports = function isAbsoluteURL(url) {
 /***/ (function(module) {
 
 module.exports = require("http");
+
+/***/ }),
+
+/***/ 617:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(__webpack_require__(53));
+jest.mock('axios');
+function post(url, payload) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield axios_1.default.post(url, payload, {
+            responseType: 'json',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const status = response.status;
+        const data = response.data;
+        return [status, data];
+    });
+}
+exports.post = post;
+
 
 /***/ }),
 
