@@ -19,12 +19,7 @@ jobs:
         with:
           url: 'https://countries.trevorblades.com/'
           method: post
-          query: |
-            {
-              countries {
-               name
-              }
-            }
+          query: '{ countries { name } }'
       - name: Print the query status
         run: echo ${{ steps.query.outputs.status }}
         shell: bash
