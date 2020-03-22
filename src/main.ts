@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import {request, Method} from './http'
+import {graphqlPayloadFor} from './graphql'
 
 export async function run(): Promise<void> {
   try {
@@ -10,7 +11,8 @@ export async function run(): Promise<void> {
 
     if (graphql.length !== 0) {
       method = 'POST'
-      data = JSON.stringify({query: graphql})
+      data = graphqlPayloadFor(data)
+
       core.info(`graphql:\n${graphql}`)
     }
 

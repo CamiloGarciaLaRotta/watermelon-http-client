@@ -852,6 +852,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const http_1 = __webpack_require__(617);
+const graphql_1 = __webpack_require__(500);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -861,7 +862,7 @@ function run() {
             const graphql = core.getInput('graphql');
             if (graphql.length !== 0) {
                 method = 'POST';
-                data = JSON.stringify({ query: graphql });
+                data = graphql_1.graphqlPayloadFor(data);
                 core.info(`graphql:\n${graphql}`);
             }
             core.info(`url: ${url}`);
@@ -2117,6 +2118,31 @@ function getState(name) {
 }
 exports.getState = getState;
 //# sourceMappingURL=core.js.map
+
+/***/ }),
+
+/***/ 500:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const MUTATION_OP = 'mutation';
+/**
+ * Returns the stringified JSON payload which corresponds to the GraphQL operation.
+ * If no operation is explicitly defined, it will default to `query`.
+ *
+ * @param data - the raw HTTP request payload
+ * @returns `{"query": data}` or `{"mutation": data}`
+ */
+function graphqlPayloadFor(data) {
+    if (data.startsWith(MUTATION_OP)) {
+        return JSON.stringify({ mutation: data });
+    }
+    return JSON.stringify({ query: data });
+}
+exports.graphqlPayloadFor = graphqlPayloadFor;
+
 
 /***/ }),
 
