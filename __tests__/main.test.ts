@@ -1,62 +1,73 @@
 import * as core from '@actions/core'
 import {run} from '../src/main'
-import axios from 'axios'
+import {request} from '../src/http'
 import {when} from 'jest-when'
 
-jest.mock('axios')
+jest.mock('../src/http')
 
 describe('when running the action with valid inputs', () => {
-  const fakePost = axios.post as jest.MockedFunction<typeof axios.post>
+  const fakeRequest = request as jest.MockedFunction<typeof request>
 
   beforeEach(() => {
-    when(fakePost)
-      .calledWith('https://foo_bar.com/api', '{ a: "payload" }')
-      .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
-
     jest.resetModules()
-    process.env['INPUT_URL'] = 'https://foo_bar.com/api'
-    process.env['INPUT_METHOD'] = 'post'
-    process.env['INPUT_QUERY'] = '{ a: "payload" }'
+
+    when(fakeRequest)
+      .calledWith('url', 'GET', '')
+      .mockReturnValue(Promise.resolve([200, {some: 'JSON'}]))
+
+    when(fakeRequest)
+      .calledWith('url', 'POST', '{ a: "payload" }')
+      .mockReturnValue(Promise.resolve([200, {some: 'JSON'}]))
+
+    process.env['INPUT_URL'] = 'url'
   })
 
   afterEach(() => {
     delete process.env['INPUT_URL']
-    delete process.env['INPUT_QUERY']
   })
 
-  it('should print as info level message the query and url', async () => {
+  it('should print as info level message the inputs and outputs', async () => {
+    process.env['INPUT_METHOD'] = 'POST'
+    process.env['INPUT_DATA'] = '{ a: "payload" }'
+
     const infoMock = jest.spyOn(core, 'info')
 
     await run()
 
     expect(infoMock.mock.calls).toEqual([
-      ['url: https://foo_bar.com/api'],
-      ['method: post'],
-      ['query:\n{ a: "payload" }'],
+      ['url: url'],
+      ['method: POST'],
+      ['data: { a: "payload" }'],
       ['response status: 200'],
       ['response body:\n{"some":"JSON"}']
     ])
+
+    delete process.env['INPUT_METHOD']
+    delete process.env['INPUT_DATA']
   })
 
-  it('should output something if a query was supplied', async () => {
+  it('should not blow with GET', async () => {
+    process.env['INPUT_METHOD'] = 'GET'
+
     const fakeSetOutput = jest.spyOn(core, 'setOutput')
 
     await run()
 
     expect(fakeSetOutput).toBeCalledWith('status', '200')
     expect(fakeSetOutput).toBeCalledWith('response', '{"some":"JSON"}')
+
+    delete process.env['INPUT_METHOD']
   })
 })
 
 describe('when running the action with invalid inputs', () => {
-  it('should fail if no query is specified', async () => {
+  it('should fail', async () => {
     const fakeSetFailed = jest.spyOn(core, 'setFailed')
     const fakeSetOutput = jest.spyOn(core, 'setOutput')
 
     await run()
-    expect(fakeSetFailed).toBeCalledWith(
-      'Input required and not supplied: query'
-    )
+
     expect(fakeSetOutput).not.toBeCalled()
+    expect(fakeSetFailed).toBeCalledWith('Input required and not supplied: url')
   })
 })
