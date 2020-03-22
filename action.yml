@@ -1,5 +1,5 @@
-name: "HTTP client"
-description: "GitHub Action that allows to specify a server endpoint & GraphQL query to execute."
+name: "Watermelon HTTP client"
+description: "GitHub Action that allows to specify a server endpoint and query to execute. Supports GraphQL queries."
 author: "Camilo Garcia La Rotta"
 inputs:
   url:
