@@ -862,7 +862,7 @@ function run() {
             const graphql = core.getInput('graphql');
             if (graphql.length !== 0) {
                 method = 'POST';
-                data = graphql_1.graphqlPayloadFor(data);
+                data = graphql_1.graphqlPayloadFor(graphql);
                 core.info(`graphql:\n${graphql}`);
             }
             core.info(`url: ${url}`);
@@ -2689,7 +2689,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(__webpack_require__(53));
-function request(url, method, data) {
+/**
+ * Send an HTTP request with JSON as content and response type.
+ *
+ * @param url - the endpoint to send the request to
+ * @param method - the HTTP method for the request. e.g `get, GET, post POST`
+ * @param data - the JSON encoded payload if any
+ * @returns `[status code, response body]`
+ */
+function request(url, method, data = '{}') {
     return __awaiter(this, void 0, void 0, function* () {
         switch (method.toUpperCase()) {
             case 'POST':

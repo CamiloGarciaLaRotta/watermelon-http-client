@@ -11,7 +11,7 @@ export async function run(): Promise<void> {
 
     if (graphql.length !== 0) {
       method = 'POST'
-      data = graphqlPayloadFor(data)
+      data = graphqlPayloadFor(graphql)
 
       core.info(`graphql:\n${graphql}`)
     }
