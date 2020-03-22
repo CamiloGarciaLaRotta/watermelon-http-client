@@ -18,8 +18,13 @@ jobs:
         uses: ./
         with:
           url: 'https://countries.trevorblades.com/'
-          method: post
-          query: '{ countries { name } }'
+          graphql: |
+            {
+              country(code: "CO") {
+                name
+                emoji
+              }
+            }
       - name: Print the query status
         run: echo ${{ steps.query.outputs.status }}
         shell: bash
