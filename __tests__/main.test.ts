@@ -12,7 +12,7 @@ describe('when running the action with valid inputs', () => {
     jest.resetModules()
 
     when(fakeRequest)
-      .calledWith('url', 'GET', '')
+      .calledWith('url', 'GET')
       .mockReturnValue(Promise.resolve([200, {some: 'JSON'}]))
 
     when(fakeRequest)

@@ -16,7 +16,7 @@ describe('when calling get', () => {
   })
 
   it('should call axios with the appropriate url and payload', async () => {
-    await request('url', 'get', '')
+    await request('url', 'get')
 
     expect(fakeGet).toHaveBeenCalledWith('url', {
       headers: {'Content-Type': 'application/json'},
