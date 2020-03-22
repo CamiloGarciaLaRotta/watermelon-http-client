@@ -59,15 +59,3 @@ describe('when running the action with valid inputs', () => {
     delete process.env['INPUT_METHOD']
   })
 })
-
-describe('when running the action with invalid inputs', () => {
-  it('should fail', async () => {
-    const fakeSetFailed = jest.spyOn(core, 'setFailed')
-    const fakeSetOutput = jest.spyOn(core, 'setOutput')
-
-    await run()
-
-    expect(fakeSetOutput).not.toBeCalled()
-    expect(fakeSetFailed).toBeCalledWith('Input required and not supplied: url')
-  })
-})

@@ -3,8 +3,8 @@ import {request, Method} from './http'
 
 export async function run(): Promise<void> {
   try {
-    const url: string = core.getInput('url', {required: true})
-    let method: string = core.getInput('method', {required: true})
+    const url: string = core.getInput('url')
+    let method: string = core.getInput('method')
     let data: string = core.getInput('data')
     const graphql: string = core.getInput('graphql')
 

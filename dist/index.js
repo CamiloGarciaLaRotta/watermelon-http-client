@@ -855,8 +855,8 @@ const http_1 = __webpack_require__(617);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const url = core.getInput('url', { required: true });
-            let method = core.getInput('method', { required: true });
+            const url = core.getInput('url');
+            let method = core.getInput('method');
             let data = core.getInput('data');
             const graphql = core.getInput('graphql');
             if (graphql.length !== 0) {

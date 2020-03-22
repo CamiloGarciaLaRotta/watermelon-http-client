@@ -3,7 +3,7 @@ on: push
 
 jobs:
   test:
-    name: Test
+    name: Test GraphQL
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
