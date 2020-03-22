@@ -1,17 +1,26 @@
 import * as core from '@actions/core'
-import {post} from './http'
+import {request, Method} from './http'
 
 export async function run(): Promise<void> {
   try {
-    const url: string = core.getInput('url')
-    const method: string = core.getInput('method')
-    const query: string = core.getInput('query', {required: true})
+    const url: string = core.getInput('url', {required: true})
+    let method: string = core.getInput('method', {required: true})
+    let data: string = core.getInput('data')
+    const graphql: string = core.getInput('graphql')
+
+    if (graphql.length !== 0) {
+      method = 'POST'
+      data = JSON.stringify({query: graphql})
+      core.info(`graphql:\n${graphql}`)
+    }
 
     core.info(`url: ${url}`)
     core.info(`method: ${method}`)
-    core.info(`query:\n${query}`)
+    if (data.length !== 0) {
+      core.info(`data: ${data}`)
+    }
 
-    const [status, rawResponse] = await post(url, query)
+    const [status, rawResponse] = await request(url, <Method>method, data)
 
     const response = JSON.stringify(rawResponse)
 

@@ -855,13 +855,21 @@ const http_1 = __webpack_require__(617);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const url = core.getInput('url');
-            const method = core.getInput('method');
-            const query = core.getInput('query', { required: true });
+            const url = core.getInput('url', { required: true });
+            let method = core.getInput('method', { required: true });
+            let data = core.getInput('data');
+            const graphql = core.getInput('graphql');
+            if (graphql.length !== 0) {
+                method = 'POST';
+                data = JSON.stringify({ query: graphql });
+                core.info(`graphql:\n${graphql}`);
+            }
             core.info(`url: ${url}`);
             core.info(`method: ${method}`);
-            core.info(`query:\n${query}`);
-            const [status, rawResponse] = yield http_1.post(url, query);
+            if (data.length !== 0) {
+                core.info(`data: ${data}`);
+            }
+            const [status, rawResponse] = yield http_1.request(url, method, data);
             const response = JSON.stringify(rawResponse);
             core.info(`response status: ${status}`);
             core.info(`response body:\n${response}`);
@@ -2655,6 +2663,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(__webpack_require__(53));
+function request(url, method, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        switch (method.toUpperCase()) {
+            case 'POST':
+                return post(url, data);
+            case 'GET':
+                return get(url);
+            default:
+                throw new Error(`unimplemented HTTP method: ${method}`);
+        }
+    });
+}
+exports.request = request;
+function get(url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield axios_1.default.get(url, {
+            responseType: 'json',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const status = response.status;
+        const data = response.data;
+        return [status, data];
+    });
+}
 function post(url, payload) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield axios_1.default.post(url, payload, {
@@ -2666,7 +2698,6 @@ function post(url, payload) {
         return [status, data];
     });
 }
-exports.post = post;
 
 
 /***/ }),
