@@ -1,5 +1,5 @@
 {
-  "name": "graphql-client-action",
+  "name": "http-client-action",
   "version": "1.0.0",
   "private": true,
   "description": "GitHub Action that allows to specify a server endpoint & GraphQL query to execute.",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CamiloGarciaLaRotta/graphql-client-action.git"
+    "url": "git+https://github.com/CamiloGarciaLaRotta/http-client-action.git"
   },
   "keywords": [
     "actions",
