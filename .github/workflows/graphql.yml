@@ -1,9 +1,9 @@
-name: Test
+name: Test GraphQL
 on: push
 
 jobs:
   test:
-    name: Test GraphQL
+    name: Test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

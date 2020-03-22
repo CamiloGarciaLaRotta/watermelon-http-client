@@ -1,9 +1,9 @@
-name: Test
+name: Test POST
 on: push
 
 jobs:
   test:
-    name: Test POST
+    name: Test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
