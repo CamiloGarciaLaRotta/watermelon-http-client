@@ -2,7 +2,7 @@
 
 A Typescript Action that performs HTTP requests within your workflow. It supports GraphQL queries!
 
-![Build](https://github.com/CamiloGarciaLaRotta/watermelon-http-client/workflows/Build/badge.svg?branch=master)
+[![Build](https://github.com/CamiloGarciaLaRotta/watermelon-http-client/workflows/Build/badge.svg?branch=master)](https://github.com/CamiloGarciaLaRotta/watermelon-http-client/actions)
 
 ### Inputs
 
