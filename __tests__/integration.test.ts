@@ -103,26 +103,38 @@ describe('when action fails', () => {
     delete process.env['INPUT_URL']
     delete process.env['INPUT_METHOD']
   })
-})
-
-describe('when HTTP request fails', () => {
-  jest.mock('axios')
-  const fakeRequest = axios.request as jest.MockedFunction<typeof axios.request>
-
-  beforeEach(() => {
-    process.env['INPUT_URL'] = 'https://jsonplaceholder.typicode.com/todos?id=1'
-    jest.resetModules()
-  })
-
-  afterEach(() => {
-    delete process.env['INPUT_URL']
-  })
 
   it('should handle server-side errors gracefully ', async () => {
-    // TODO
+    // request will 404 because server does not respond to POST
+    process.env['INPUT_URL'] = 'https://camilogarcialarotta.io/'
+    process.env['INPUT_METHOD'] = 'post'
+
+    const fakeLogError = jest.spyOn(core, 'error')
+    const fakeSetOutput = jest.spyOn(core, 'setOutput')
+
+    // does not throw exception
+    await run()
+
+    // once for each of the following: status, headers, response and final error message
+    expect(fakeLogError).toHaveBeenCalledTimes(4)
+    expect(fakeSetOutput).not.toHaveBeenCalled()
+
+    delete process.env['INPUT_URL']
+    delete process.env['INPUT_METHOD']
   })
 
   it('should handle action-side errors gracefully ', async () => {
-    // TODO
+    // request won't be generated because it's an invalid protocol
+    process.env['INPUT_URL'] = 'ftp://>invalid|url<'
+
+    const fakeLogError = jest.spyOn(core, 'error')
+    const fakeSetOutput = jest.spyOn(core, 'setOutput')
+
+    // does not throw exception
+    await run()
+
+    // once for each of the following: status, headers, response and final error message
+    expect(fakeLogError).toHaveBeenCalledTimes(4)
+    expect(fakeSetOutput).not.toHaveBeenCalled()
   })
 })
