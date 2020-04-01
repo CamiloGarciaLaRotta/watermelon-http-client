@@ -47,7 +47,6 @@ export async function run(): Promise<void> {
     core.setOutput('headers', `${headers}`)
     core.setOutput('response', `${response}`)
   } catch (error) {
-    core.error(error)
     core.setFailed(error.message)
   }
 }

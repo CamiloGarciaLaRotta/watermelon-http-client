@@ -887,7 +887,6 @@ function run() {
             core.setOutput('response', `${response}`);
         }
         catch (error) {
-            core.error(error);
             core.setFailed(error.message);
         }
     });

@@ -96,8 +96,8 @@ describe('when action fails', () => {
     // does not throw exception
     await run()
 
-    // once for each of the following: status, headers, response and final error message
-    expect(fakeLogError).toHaveBeenCalledTimes(4)
+    // once for each of the following: status, headers, response
+    expect(fakeLogError).toHaveBeenCalledTimes(3)
     expect(fakeSetOutput).not.toHaveBeenCalled()
 
     delete process.env['INPUT_URL']
@@ -115,8 +115,8 @@ describe('when action fails', () => {
     // does not throw exception
     await run()
 
-    // once for each of the following: status, headers, response and final error message
-    expect(fakeLogError).toHaveBeenCalledTimes(4)
+    // once for each of the following: status, headers, response
+    expect(fakeLogError).toHaveBeenCalledTimes(3)
     expect(fakeSetOutput).not.toHaveBeenCalled()
 
     delete process.env['INPUT_URL']
@@ -133,8 +133,8 @@ describe('when action fails', () => {
     // does not throw exception
     await run()
 
-    // once for each of the following: status, headers, response and final error message
-    expect(fakeLogError).toHaveBeenCalledTimes(4)
+    // once for each of the following: status, headers, response
+    expect(fakeLogError).toHaveBeenCalledTimes(3)
     expect(fakeSetOutput).not.toHaveBeenCalled()
   })
 })
