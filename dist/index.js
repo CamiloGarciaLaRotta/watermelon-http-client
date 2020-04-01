@@ -870,11 +870,20 @@ function run() {
             if (data.length !== 0) {
                 core.info(`data: ${data}`);
             }
-            const [status, rawResponse] = yield http_1.request(url, method, data);
+            const [status, rawHeaders, rawResponse] = yield http_1.request(url, method, data);
+            const headers = JSON.stringify(rawHeaders);
             const response = JSON.stringify(rawResponse);
+            if (status < 200 || status >= 300) {
+                core.error(`response status: ${status}`);
+                core.error(`response headers: ${headers}`);
+                core.error(`response body:\n${response}`);
+                throw new Error(`request failed: ${response}`);
+            }
             core.info(`response status: ${status}`);
+            core.info(`response headers: ${headers}`);
             core.info(`response body:\n${response}`);
             core.setOutput('status', `${status}`);
+            core.setOutput('headers', `${headers}`);
             core.setOutput('response', `${response}`);
         }
         catch (error) {
@@ -2699,39 +2708,42 @@ const axios_1 = __importDefault(__webpack_require__(53));
  */
 function request(url, method, data = '{}') {
     return __awaiter(this, void 0, void 0, function* () {
-        switch (method.toUpperCase()) {
-            case 'POST':
-                return post(url, data);
-            case 'GET':
-                return get(url);
-            default:
-                throw new Error(`unimplemented HTTP method: ${method}`);
+        try {
+            const response = yield axios_1.default.request({
+                url,
+                method,
+                data,
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const status = response.status;
+            const headers = response.headers;
+            const payload = response.data;
+            return [status, headers, payload];
+        }
+        catch (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                const status = error.response.status;
+                const headers = error.response.headers;
+                const payload = error.response.data;
+                return [status, headers, payload];
+            }
+            else if (error.request) {
+                // `error.request` is an instance of XMLHttpRequest
+                return [
+                    500,
+                    '',
+                    `request was made but no response was received: ${error.request}`
+                ];
+            }
+            else {
+                // Something happened in setting up the request that triggered an Error
+                return [500, '', `request could not be generated: ${error.message}`];
+            }
         }
     });
 }
 exports.request = request;
-function get(url) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.get(url, {
-            responseType: 'json',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const status = response.status;
-        const data = response.data;
-        return [status, data];
-    });
-}
-function post(url, payload) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.post(url, payload, {
-            responseType: 'json',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const status = response.status;
-        const data = response.data;
-        return [status, data];
-    });
-}
 
 
 /***/ }),
