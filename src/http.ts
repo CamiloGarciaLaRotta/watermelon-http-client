@@ -34,17 +34,14 @@ export async function request(
       const payload = error.response.data as Object
 
       return [status, headers, payload]
-    } else if (error.request) {
-      // `error.request` is an instance of XMLHttpRequest
-      return [
-        500,
-        '',
-        `request was made but no response was received: ${error.request}`
-      ]
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      return [500, '', `request could not be generated: ${error.message}`]
     }
+
+    // Something happened in setting up the request that triggered an error
+    return [
+      500,
+      '',
+      `request could not be generated: ${JSON.stringify(error.message)}`
+    ]
   }
 }
 
