@@ -19,7 +19,6 @@ jobs:
           method: post
           data: '{ "title": "dummy-todo", "userId": 1, "completed": false }'
       - name: Print the response status
-      - name: Print the response status
         run: echo ${{ steps.query.outputs.status }}
         shell: bash
       - name: Print the response headers
