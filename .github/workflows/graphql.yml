@@ -23,9 +23,12 @@ jobs:
                 emoji
               }
             }
-      - name: Print the query status
+      - name: Print the response status
         run: echo ${{ steps.query.outputs.status }}
         shell: bash
-      - name: Print the query result
+      - name: Print the response headers
+        run: echo ${{ steps.query.outputs.status }}
+        shell: bash
+      - name: Print the response payload
         run: echo ${{ steps.query.outputs.response }}
         shell: bash
