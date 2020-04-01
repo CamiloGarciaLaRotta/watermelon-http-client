@@ -5,49 +5,47 @@ import {request} from '../src/http'
 jest.mock('axios')
 
 describe('when calling get', () => {
-  const fakeGet = axios.get as jest.MockedFunction<typeof axios.get>
+  const fakeRequest = axios.request as jest.MockedFunction<typeof axios.request>
 
   beforeEach(() => {
     jest.resetModules()
 
-    when(fakeGet)
-      .calledWith('url')
+    when(fakeRequest)
+      .calledWith(expect.anything())
       .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
   })
 
   it('should call axios with the appropriate url and payload', async () => {
     await request('url', 'get')
 
-    expect(fakeGet).toHaveBeenCalledWith('url', {
-      headers: {'Content-Type': 'application/json'},
-      responseType: 'json'
+    expect(fakeRequest).toHaveBeenCalledWith({
+      url: 'url',
+      method: 'get',
+      data: '{}',
+      headers: expect.anything()
     })
   })
 })
 
 describe('when calling post', () => {
-  const fakePost = axios.post as jest.MockedFunction<typeof axios.post>
+  const fakeRequest = axios.request as jest.MockedFunction<typeof axios.request>
 
   beforeEach(() => {
     jest.resetModules()
 
-    when(fakePost)
-      .calledWith('url', '{"a": "JSON"}')
+    when(fakeRequest)
+      .calledWith(expect.anything())
       .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
   })
 
   it('should call axios with the appropriate url and payload', async () => {
     await request('url', 'post', '{"a": "JSON"}')
 
-    expect(fakePost).toHaveBeenCalledWith('url', '{"a": "JSON"}', {
-      headers: {'Content-Type': 'application/json'},
-      responseType: 'json'
+    expect(fakeRequest).toHaveBeenCalledWith({
+      url: 'url',
+      method: 'post',
+      data: '{"a": "JSON"}',
+      headers: expect.anything()
     })
-  })
-})
-
-describe('when calling unimplemented method', () => {
-  it('should throw unimplemented error', async () => {
-    await expect(request('url', 'delete', '')).rejects.toThrow()
   })
 })
