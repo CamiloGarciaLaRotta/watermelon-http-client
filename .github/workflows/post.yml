@@ -19,11 +19,11 @@ jobs:
           method: post
           data: '{ "title": "dummy-todo", "userId": 1, "completed": false }'
       - name: Print the response status
-        run: echo ${{ steps.query.outputs.status }}
+        run: echo ${{ steps.request.outputs.status }}
         shell: bash
       - name: Print the response headers
-        run: echo ${{ steps.query.outputs.status }}
+        run: echo ${{ steps.request.outputs.headers }}
         shell: bash
       - name: Print the response payload
-        run: echo ${{ steps.query.outputs.response }}
+        run: echo ${{ steps.request.outputs.response }}
         shell: bash
