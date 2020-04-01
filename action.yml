@@ -15,6 +15,8 @@ inputs:
 outputs:
   status:
     description: The status of the HTTP request
+  headers:
+    description: The response HTTP headers
   response:
     description: The raw query response body
 runs:

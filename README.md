@@ -18,6 +18,7 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 | Name | Description |
 | --- | --- |
 | `status` | Numeric response status code | 
+| `headers` | JSON encoded response HTTP headers |
 | `response` | JSON encoded response |
 
 ### Examples
