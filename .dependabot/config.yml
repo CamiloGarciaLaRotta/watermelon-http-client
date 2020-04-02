@@ -3,10 +3,9 @@ update_configs:
   - package_manager: "javascript"
     directory: "/"
     update_schedule: "live"
-    default_assignees:
-      - CamiloGarciaLaRotta
     default_reviewers:
       - CamiloGarciaLaRotta
+      - titoine54
     commit_message:
       prefix: "fix"
       prefix_development: "chore"
@@ -18,8 +17,7 @@ update_configs:
     update_schedule: "daily"
     default_reviewers:
       - CamiloGarciaLaRotta
-    default_assignees:
-      - CamiloGarciaLaRotta
+      - titoine54
     commit_message:
       prefix: "fix"
       prefix_development: "chore"
