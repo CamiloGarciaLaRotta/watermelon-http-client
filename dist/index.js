@@ -861,12 +861,12 @@ function run() {
             let data = core.getInput('data');
             const graphql = core.getInput('graphql');
             let headers = core.getInput('headers');
-            if (headers.length == 0) {
-                headers = "{'Content-Type': 'application/json'}";
-            }
             if (graphql.length !== 0) {
                 method = 'POST';
                 data = graphql_1.graphqlPayloadFor(graphql);
+                if (headers.length == 0) {
+                    headers = '{\'Content-Type\': \'application/graphql\'}';
+                }
                 core.info(`graphql:\n${graphql}`);
             }
             core.info(`url: ${url}`);
@@ -874,12 +874,8 @@ function run() {
             if (data.length !== 0) {
                 core.info(`data: ${data}`);
             }
-<<<<<<< HEAD
-            const [status, rawHeaders, rawResponse] = yield http_1.request(url, method, data);
-            const headers = JSON.stringify(rawHeaders);
-=======
-            const [status, rawResponse] = yield http_1.request(url, method, data, headers);
->>>>>>> b01610cfde9760085915318c127f17b016fec695
+            const [status, rawHeaders, rawResponse] = yield http_1.request(url, method, data, headers);
+            const responseHeaders = JSON.stringify(rawHeaders);
             const response = JSON.stringify(rawResponse);
             if (status < 200 || status >= 300) {
                 core.error(`response status: ${status}`);
@@ -891,7 +887,7 @@ function run() {
             core.info(`response headers: ${headers}`);
             core.info(`response body:\n${response}`);
             core.setOutput('status', `${status}`);
-            core.setOutput('headers', `${headers}`);
+            core.setOutput('headers', `${responseHeaders}`);
             core.setOutput('response', `${response}`);
         }
         catch (error) {
@@ -2714,73 +2710,61 @@ const axios_1 = __importDefault(__webpack_require__(53));
  * @param headers - the JSON encoded custom headers
  * @returns `[status code, response body]`
  */
-function request(url, method, data = '{}', headers) {
+function request(url, method, //using Method from axios
+data = '{}', headers = '{\'Content-Type\': \'application/json\'}') {
     return __awaiter(this, void 0, void 0, function* () {
-<<<<<<< HEAD
         try {
             const response = yield axios_1.default.request({
                 url,
                 method,
                 data,
-                headers: { 'Content-Type': 'application/json' }
+                headers
             });
             const status = response.status;
-            const headers = response.headers;
+            const responseHeaders = response.headers;
             const payload = response.data;
-            return [status, headers, payload];
+            return [status, responseHeaders, payload];
         }
         catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 const status = error.response.status;
-                const headers = error.response.headers;
+                const responseHeaders = error.response.headers;
                 const payload = error.response.data;
-                return [status, headers, payload];
+                return [status, responseHeaders, payload];
             }
-            // Something happened in setting up the request that triggered an error
-            return [
-                500,
-                '',
-                `request could not be generated: ${JSON.stringify(error.message)}`
-            ];
-=======
-        switch (method.toUpperCase()) {
-            case 'POST':
-                return post(url, data, headers);
-            case 'GET':
-                return get(url, headers);
-            default:
-                throw new Error(`unimplemented HTTP method: ${method}`);
->>>>>>> b01610cfde9760085915318c127f17b016fec695
+            else {
+                // Something happened in setting up the request that triggered an error
+                return [
+                    500,
+                    '',
+                    `request could not be generated: ${error.message}`
+                ];
+            }
         }
     });
 }
 exports.request = request;
-<<<<<<< HEAD
-=======
-function get(url, headers) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.get(url, {
-            responseType: 'json',
-            headers: headers
-        });
-        const status = response.status;
-        const data = response.data;
-        return [status, data];
-    });
-}
-function post(url, payload, headers) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.post(url, payload, {
-            responseType: 'json',
-            headers: headers
-        });
-        const status = response.status;
-        const data = response.data;
-        return [status, data];
-    });
-}
->>>>>>> b01610cfde9760085915318c127f17b016fec695
+// why not use Method from axios.AxiosRequestConfig ? 
+// export type Method =
+//   | 'get'
+//   | 'GET'
+//   | 'delete'
+//   | 'DELETE'
+//   | 'head'
+//   | 'HEAD'
+//   | 'options'
+//   | 'OPTIONS'
+//   | 'post'
+//   | 'POST'
+//   | 'put'
+//   | 'PUT'
+//   | 'patch'
+//   | 'PATCH'
+//   | 'link'
+//   | 'LINK'
+//   | 'unlink'
+//   | 'UNLINK'
 
 
 /***/ }),

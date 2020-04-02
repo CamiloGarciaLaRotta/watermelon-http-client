@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
-import {request, Method} from './http'
+import axios, { Method } from 'axios'
+import {request} from './http'
 import {graphqlPayloadFor} from './graphql'
 
 export async function run(): Promise<void> {
@@ -10,13 +11,13 @@ export async function run(): Promise<void> {
     const graphql: string = core.getInput('graphql')
     let headers: string = core.getInput('headers')
 
-    if (headers.length == 0) {
-      headers = "{'Content-Type': 'application/json'}"
-    }
-
     if (graphql.length !== 0) {
       method = 'POST'
       data = graphqlPayloadFor(graphql)
+      
+      if (headers.length == 0) {
+        headers = '{\'Content-Type\': \'application/graphql\'}'
+      }
 
       core.info(`graphql:\n${graphql}`)
     }
@@ -27,17 +28,14 @@ export async function run(): Promise<void> {
       core.info(`data: ${data}`)
     }
 
-<<<<<<< HEAD
     const [status, rawHeaders, rawResponse] = await request(
       url,
       <Method>method,
-      data
+      data,
+      headers
     )
-=======
-    const [status, rawResponse] = await request(url, <Method>method, data, headers)
->>>>>>> b01610cfde9760085915318c127f17b016fec695
 
-    const headers = JSON.stringify(rawHeaders)
+    const responseHeaders = JSON.stringify(rawHeaders)
     const response = JSON.stringify(rawResponse)
 
     if (status < 200 || status >= 300) {
@@ -53,7 +51,7 @@ export async function run(): Promise<void> {
     core.info(`response body:\n${response}`)
 
     core.setOutput('status', `${status}`)
-    core.setOutput('headers', `${headers}`)
+    core.setOutput('headers', `${responseHeaders}`)
     core.setOutput('response', `${response}`)
   } catch (error) {
     core.setFailed(error.message)

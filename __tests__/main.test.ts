@@ -35,7 +35,7 @@ describe('when running the action with valid inputs', () => {
       ['method: POST'],
       ['data: { a: "payload" }'],
       ['response status: 200'],
-      ['response headers: "headers"'],
+      ['response headers: '],
       ['response body:\n{"some":"JSON"}']
     ])
 
