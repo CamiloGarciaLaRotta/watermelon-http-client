@@ -12,40 +12,37 @@ export async function request(
   url: string,
   method: Method,
   data = '{}'
-): Promise<[number, Object]> {
-  switch (method.toUpperCase()) {
-    case 'POST':
-      return post(url, data)
-    case 'GET':
-      return get(url)
+): Promise<[number, Object, Object]> {
+  try {
+    const response = await axios.request({
+      url,
+      method,
+      data,
+      headers: {'Content-Type': 'application/json'}
+    })
 
-    default:
-      throw new Error(`unimplemented HTTP method: ${method}`)
+    const status = response.status
+    const headers = response.headers
+    const payload = response.data as Object
+
+    return [status, headers, payload]
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      const status = error.response.status
+      const headers = error.response.headers
+      const payload = error.response.data as Object
+
+      return [status, headers, payload]
+    }
+
+    // Something happened in setting up the request that triggered an error
+    return [
+      500,
+      '',
+      `request could not be generated: ${JSON.stringify(error.message)}`
+    ]
   }
-}
-
-async function get(url: string): Promise<[number, Object]> {
-  const response = await axios.get(url, {
-    responseType: 'json',
-    headers: {'Content-Type': 'application/json'}
-  })
-
-  const status = response.status
-  const data = response.data as Object
-
-  return [status, data]
-}
-
-async function post(url: string, payload: string): Promise<[number, Object]> {
-  const response = await axios.post(url, payload, {
-    responseType: 'json',
-    headers: {'Content-Type': 'application/json'}
-  })
-
-  const status = response.status
-  const data = response.data as Object
-
-  return [status, data]
 }
 
 export type Method =

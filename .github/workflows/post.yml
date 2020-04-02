@@ -10,9 +10,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: Get the sources
-        uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
+        uses: actions/checkout@v2
       - name: Execute a dummy request
         id: request
         uses: ./
@@ -23,6 +21,9 @@ jobs:
       - name: Print the response status
         run: echo ${{ steps.request.outputs.status }}
         shell: bash
-      - name: Print the response
+      - name: Print the response headers
+        run: echo ${{ steps.request.outputs.headers }}
+        shell: bash
+      - name: Print the response payload
         run: echo ${{ steps.request.outputs.response }}
         shell: bash

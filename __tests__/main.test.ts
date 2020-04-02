@@ -12,12 +12,8 @@ describe('when running the action with valid inputs', () => {
     jest.resetModules()
 
     when(fakeRequest)
-      .calledWith('url', 'GET')
-      .mockReturnValue(Promise.resolve([200, {some: 'JSON'}]))
-
-    when(fakeRequest)
-      .calledWith('url', 'POST', '{ a: "payload" }')
-      .mockReturnValue(Promise.resolve([200, {some: 'JSON'}]))
+      .calledWith('url', expect.anything())
+      .mockReturnValue(Promise.resolve([200, 'headers', {some: 'JSON'}]))
 
     process.env['INPUT_URL'] = 'url'
   })
@@ -39,6 +35,7 @@ describe('when running the action with valid inputs', () => {
       ['method: POST'],
       ['data: { a: "payload" }'],
       ['response status: 200'],
+      ['response headers: "headers"'],
       ['response body:\n{"some":"JSON"}']
     ])
 
@@ -54,6 +51,7 @@ describe('when running the action with valid inputs', () => {
     await run()
 
     expect(fakeSetOutput).toBeCalledWith('status', '200')
+    expect(fakeSetOutput).toBeCalledWith('headers', expect.anything())
     expect(fakeSetOutput).toBeCalledWith('response', '{"some":"JSON"}')
 
     delete process.env['INPUT_METHOD']

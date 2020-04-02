@@ -22,17 +22,31 @@ export async function run(): Promise<void> {
       core.info(`data: ${data}`)
     }
 
-    const [status, rawResponse] = await request(url, <Method>method, data)
+    const [status, rawHeaders, rawResponse] = await request(
+      url,
+      <Method>method,
+      data
+    )
 
+    const headers = JSON.stringify(rawHeaders)
     const response = JSON.stringify(rawResponse)
 
+    if (status < 200 || status >= 300) {
+      core.error(`response status: ${status}`)
+      core.error(`response headers: ${headers}`)
+      core.error(`response body:\n${response}`)
+
+      throw new Error(`request failed: ${response}`)
+    }
+
     core.info(`response status: ${status}`)
+    core.info(`response headers: ${headers}`)
     core.info(`response body:\n${response}`)
 
     core.setOutput('status', `${status}`)
+    core.setOutput('headers', `${headers}`)
     core.setOutput('response', `${response}`)
   } catch (error) {
-    core.error(error)
     core.setFailed(error.message)
   }
 }
