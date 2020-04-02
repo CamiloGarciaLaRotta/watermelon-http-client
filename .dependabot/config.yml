@@ -1,0 +1,28 @@
+version: 1
+update_configs:
+  - package_manager: "javascript"
+    directory: "/"
+    update_schedule: "live"
+    default_assignees:
+      - CamiloGarciaLaRotta
+    default_reviewers:
+      - CamiloGarciaLaRotta
+    commit_message:
+      prefix: "fix"
+      prefix_development: "chore"
+    default_labels:
+      - "dependencies"
+      - "security"
+  - package_manager: "github_actions"
+    directory: "/"
+    update_schedule: "daily"
+    default_reviewers:
+      - CamiloGarciaLaRotta
+    default_assignees:
+      - CamiloGarciaLaRotta
+    commit_message:
+      prefix: "fix"
+      prefix_development: "chore"
+    default_labels:
+      - "dependencies"
+      - "security"
