@@ -20,7 +20,6 @@ update_configs:
       - titoine54
     commit_message:
       prefix: "fix"
-      prefix_development: "chore"
     default_labels:
       - "dependencies"
       - "security"
