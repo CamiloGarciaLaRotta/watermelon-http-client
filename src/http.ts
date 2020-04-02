@@ -12,6 +12,7 @@ import axios from 'axios'
 export async function request(
   url: string,
   method: Method,
+<<<<<<< HEAD
   data = '{}'
 ): Promise<[number, Object, Object]> {
   try {
@@ -21,11 +22,22 @@ export async function request(
       data,
       headers: {'Content-Type': 'application/json'}
     })
+=======
+  data = '{}',
+  headers: string
+): Promise<[number, Object]> {
+  switch (method.toUpperCase()) {
+    case 'POST':
+      return post(url, data, headers)
+    case 'GET':
+      return get(url, headers)
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
 
     const status = response.status
     const headers = response.headers
     const payload = response.data as Object
 
+<<<<<<< HEAD
     return [status, headers, payload]
   } catch (error) {
     if (error.response) {
@@ -33,10 +45,18 @@ export async function request(
       const status = error.response.status
       const headers = error.response.headers
       const payload = error.response.data as Object
+=======
+async function get(url: string, headers: string): Promise<[number, Object]> {
+  const response = await axios.get(url, {
+    responseType: 'json',
+    headers: headers
+  })
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
 
       return [status, headers, payload]
     }
 
+<<<<<<< HEAD
     // Something happened in setting up the request that triggered an error
     return [
       500,
@@ -44,6 +64,18 @@ export async function request(
       `request could not be generated: ${JSON.stringify(error.message)}`
     ]
   }
+=======
+async function post(url: string, payload: string, headers: string): Promise<[number, Object]> {
+  const response = await axios.post(url, payload, {
+    responseType: 'json',
+    headers: headers
+  })
+
+  const status = response.status
+  const data = response.data as Object
+
+  return [status, data]
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
 }
 
 export type Method =

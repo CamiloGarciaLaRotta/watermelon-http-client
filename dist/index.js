@@ -874,8 +874,12 @@ function run() {
             if (data.length !== 0) {
                 core.info(`data: ${data}`);
             }
+<<<<<<< HEAD
             const [status, rawHeaders, rawResponse] = yield http_1.request(url, method, data);
             const headers = JSON.stringify(rawHeaders);
+=======
+            const [status, rawResponse] = yield http_1.request(url, method, data, headers);
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
             const response = JSON.stringify(rawResponse);
             if (status < 200 || status >= 300) {
                 core.error(`response status: ${status}`);
@@ -2712,6 +2716,7 @@ const axios_1 = __importDefault(__webpack_require__(53));
  */
 function request(url, method, data = '{}', headers) {
     return __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
         try {
             const response = yield axios_1.default.request({
                 url,
@@ -2738,10 +2743,44 @@ function request(url, method, data = '{}', headers) {
                 '',
                 `request could not be generated: ${JSON.stringify(error.message)}`
             ];
+=======
+        switch (method.toUpperCase()) {
+            case 'POST':
+                return post(url, data, headers);
+            case 'GET':
+                return get(url, headers);
+            default:
+                throw new Error(`unimplemented HTTP method: ${method}`);
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
         }
     });
 }
 exports.request = request;
+<<<<<<< HEAD
+=======
+function get(url, headers) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield axios_1.default.get(url, {
+            responseType: 'json',
+            headers: headers
+        });
+        const status = response.status;
+        const data = response.data;
+        return [status, data];
+    });
+}
+function post(url, payload, headers) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield axios_1.default.post(url, payload, {
+            responseType: 'json',
+            headers: headers
+        });
+        const status = response.status;
+        const data = response.data;
+        return [status, data];
+    });
+}
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
 
 
 /***/ }),

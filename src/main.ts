@@ -27,11 +27,15 @@ export async function run(): Promise<void> {
       core.info(`data: ${data}`)
     }
 
+<<<<<<< HEAD
     const [status, rawHeaders, rawResponse] = await request(
       url,
       <Method>method,
       data
     )
+=======
+    const [status, rawResponse] = await request(url, <Method>method, data, headers)
+>>>>>>> b01610cfde9760085915318c127f17b016fec695
 
     const headers = JSON.stringify(rawHeaders)
     const response = JSON.stringify(rawResponse)
