@@ -8,6 +8,11 @@ export async function run(): Promise<void> {
     let method: string = core.getInput('method')
     let data: string = core.getInput('data')
     const graphql: string = core.getInput('graphql')
+    let headers: string = core.getInput('headers')
+
+    if (headers.length == 0) {
+      headers = "{'Content-Type': 'application/json'}"
+    }
 
     if (graphql.length !== 0) {
       method = 'POST'
