@@ -32,7 +32,7 @@
     "kind-of": ">=6.0.3"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.5",
+    "@types/jest": "^25.2.0",
     "@types/node": "^13.11.0",
     "@typescript-eslint/parser": "^2.8.0",
     "@zeit/ncc": "^0.22.0",
