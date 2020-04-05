@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import axios, { Method } from 'axios'
+import {Method} from 'axios'
 import {request} from './http'
 import {graphqlPayloadFor} from './graphql'
 

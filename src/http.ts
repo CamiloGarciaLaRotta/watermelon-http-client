@@ -1,4 +1,4 @@
-import axios, { Method } from 'axios'
+import axios, {Method} from 'axios'
 
 /**
  * Send an HTTP request with JSON as content and response type.
@@ -46,24 +46,3 @@ export async function request(
     ]
   }
 }
-
-// why not use Method from axios.AxiosRequestConfig ? 
-// export type Method =
-//   | 'get'
-//   | 'GET'
-//   | 'delete'
-//   | 'DELETE'
-//   | 'head'
-//   | 'HEAD'
-//   | 'options'
-//   | 'OPTIONS'
-//   | 'post'
-//   | 'POST'
-//   | 'put'
-//   | 'PUT'
-//   | 'patch'
-//   | 'PATCH'
-//   | 'link'
-//   | 'LINK'
-//   | 'unlink'
-//   | 'UNLINK'
