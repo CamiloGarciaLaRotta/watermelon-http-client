@@ -872,7 +872,7 @@ function run() {
                 method = 'POST';
                 data = graphql_1.graphqlPayloadFor(graphql);
                 if (isEmpty(inputHeaders)) {
-                    inputHeaders = { 'Content-Type': 'application/graphql' };
+                    inputHeaders = { 'Content-Type': 'application/json' };
                 }
                 core.info(`graphql:\n${graphql}`);
             }
@@ -2778,26 +2778,6 @@ data = '{}', headers = {}) {
     });
 }
 exports.request = request;
-// why not use Method from axios.AxiosRequestConfig ?
-// export type Method =
-//   | 'get'
-//   | 'GET'
-//   | 'delete'
-//   | 'DELETE'
-//   | 'head'
-//   | 'HEAD'
-//   | 'options'
-//   | 'OPTIONS'
-//   | 'post'
-//   | 'POST'
-//   | 'put'
-//   | 'PUT'
-//   | 'patch'
-//   | 'PATCH'
-//   | 'link'
-//   | 'LINK'
-//   | 'unlink'
-//   | 'UNLINK'
 
 
 /***/ }),

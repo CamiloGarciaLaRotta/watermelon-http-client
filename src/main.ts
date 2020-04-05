@@ -23,7 +23,7 @@ export async function run(): Promise<void> {
       data = graphqlPayloadFor(graphql)
 
       if (isEmpty(inputHeaders)) {
-        inputHeaders = {'Content-Type': 'application/graphql'}
+        inputHeaders = {'Content-Type': 'application/json'}
       }
 
       core.info(`graphql:\n${graphql}`)
