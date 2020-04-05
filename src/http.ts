@@ -13,7 +13,7 @@ export async function request(
   url: string,
   method: Method, //using Method from axios
   data = '{}',
-  headers = '{\'Content-Type\': \'application/json\'}'
+  headers: Object = {}
 ): Promise<[number, Object, Object]> {
   try {
     const response = await axios.request({
