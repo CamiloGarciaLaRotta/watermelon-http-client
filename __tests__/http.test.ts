@@ -12,17 +12,17 @@ describe('when calling get', () => {
 
     when(fakeRequest)
       .calledWith(expect.anything())
-      .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
+      .mockReturnValue(Promise.resolve({status: 200, data: {}, headers: {}}))
   })
 
   it('should call axios with the appropriate url and payload', async () => {
-    await request('url', 'get')
+    await request('url', 'get', '{"some": "JSON"}', {some: 'headers'})
 
     expect(fakeRequest).toHaveBeenCalledWith({
       url: 'url',
       method: 'get',
-      data: '{}',
-      headers: expect.anything()
+      data: '{"some": "JSON"}',
+      headers: {some: 'headers'}
     })
   })
 })
@@ -39,13 +39,13 @@ describe('when calling post', () => {
   })
 
   it('should call axios with the appropriate url and payload', async () => {
-    await request('url', 'post', '{"a": "JSON"}')
+    await request('url', 'post', '{"a": "JSON"}', {})
 
     expect(fakeRequest).toHaveBeenCalledWith({
       url: 'url',
       method: 'post',
       data: '{"a": "JSON"}',
-      headers: expect.anything()
+      headers: {}
     })
   })
 })
