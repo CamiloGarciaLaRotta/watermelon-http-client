@@ -79,6 +79,41 @@ describe('when called with a GraphQL query', () => {
   })
 })
 
+describe('when called GraphQL with a custom header', () => {
+  beforeEach(() => {
+    process.env['INPUT_URL'] = 'https://countries.trevorblades.com/'
+    process.env['INPUT_GRAPHQL'] = `
+    {
+      country(code: "CA") {
+        name
+        capital
+        currency
+       }
+    }`
+    process.env['INPUT_HEADERS'] =
+      '{"content-type":"application/json", Cache-Control: max-age=3600, Accept-Charset: utf-8}'
+  })
+
+  afterEach(() => {
+    delete process.env['INPUT_URL']
+    delete process.env['INPUT_GRAPHQL']
+    delete process.env['INPUT_HEADERS']
+  })
+
+  it('should reply with the corresponding headers', async () => {
+    const fakeSetOutput = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    expect(fakeSetOutput).toBeCalledWith('status', expect.anything())
+    expect(fakeSetOutput).toBeCalledWith('response', expect.anything())
+    expect(fakeSetOutput).toBeCalledWith(
+      'headers',
+      expect.stringContaining('utf-8')
+    )
+  })
+})
+
 describe('when action fails', () => {
   it('should handle missing input gracefully', async () => {
     const fakeSetOutput = jest.spyOn(core, 'setOutput')
