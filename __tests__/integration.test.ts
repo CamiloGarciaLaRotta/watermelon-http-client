@@ -79,38 +79,27 @@ describe('when called with a GraphQL query', () => {
   })
 })
 
-describe('when called GraphQL with a custom header', () => {
+describe('when called with a custom header containing wrong auth', () => {
   beforeEach(() => {
-    process.env['INPUT_URL'] = 'https://countries.trevorblades.com/'
-    process.env['INPUT_GRAPHQL'] = `
-    {
-      country(code: "CA") {
-        name
-        capital
-        currency
-       }
-    }`
+    process.env['INPUT_URL'] = 'https://api.github.com'
     process.env['INPUT_HEADERS'] =
-      '{"content-type":"application/json", Cache-Control: max-age=3600, Accept-Charset: utf-8}'
+      '{"content-type":"application/json", "Authorization": "Basic YWxhZGRpbjpvcGVuc2VzYW1l"}'
   })
 
   afterEach(() => {
     delete process.env['INPUT_URL']
-    delete process.env['INPUT_GRAPHQL']
     delete process.env['INPUT_HEADERS']
   })
 
-  it('should reply with the corresponding headers', async () => {
+  it('should reply with a 401 Unauthorized', async () => {
     const fakeSetOutput = jest.spyOn(core, 'setOutput')
+    const fakeLogError = jest.spyOn(core, 'error')
 
     await run()
 
-    expect(fakeSetOutput).toBeCalledWith('status', expect.anything())
-    expect(fakeSetOutput).toBeCalledWith('response', expect.anything())
-    expect(fakeSetOutput).toBeCalledWith(
-      'headers',
-      expect.stringContaining('utf-8')
-    )
+    expect(fakeLogError).toHaveBeenCalledTimes(3)
+    expect(fakeSetOutput).not.toHaveBeenCalled()
+    expect(fakeLogError).toBeCalledWith('response status: 401')
   })
 })
 
