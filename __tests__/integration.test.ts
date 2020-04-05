@@ -60,11 +60,13 @@ describe('when called with a GraphQL query', () => {
           emoji
          }
       }`
+    process.env['INPUT_HEADERS'] = '{"content-type":"application/json"}'
   })
 
   afterEach(() => {
     delete process.env['INPUT_URL']
     delete process.env['INPUT_GRAPHQL']
+    delete process.env['INPUT_HEADERS']
   })
 
   it('should output something if a query was supplied', async () => {
