@@ -11,7 +11,7 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 | url | Endpoint to query | https://api.github.com/graphql |
 | method | HTTP method | `GET` |
 | data | HTTP request payload |  |
-| headers | HTTP headers | {'Content-Type': 'application/json'} |
+| headers | HTTP headers | Empty by default. If no headers are supplied, GraphQL queries will be sent with `{'Content-Type': 'application/json'}` |
 | graphql | GraphQL query to execute. If defined, the `data` field is automatically populated with this payload and the `method` is set to `POST` |
 
 
@@ -32,7 +32,6 @@ A Typescript Action that performs HTTP requests within your workflow. It support
   uses: CamiloGarciaLaRotta/watermelon-http-client@v1
   with:
     url: 'https://countries.trevorblades.com/'
-    headers: '{"Content-Type": "application/json"}'
     graphql: |
       {
         country(code: "CO") {
@@ -45,7 +44,6 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 - [`GET`](.github/workflows/get.yml)
   ```yaml
   uses: CamiloGarciaLaRotta/watermelon-http-client@v1
-  headers: '{"Authorization": "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="}'
   with:
     url: 'https://jsonplaceholder.typicode.com/todos?id=1'
   ```
@@ -55,7 +53,6 @@ A Typescript Action that performs HTTP requests within your workflow. It support
   uses: CamiloGarciaLaRotta/watermelon-http-client@v1
   with:
     url: 'https://jsonplaceholder.typicode.com/todos'
-    headers: '{ "Connection": "keep-alive"}'
     method: post
     data: '{ "title": "dummy-todo", "userId": 1, "completed": false }'
   ```

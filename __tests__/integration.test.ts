@@ -83,7 +83,7 @@ describe('when called with a custom header containing wrong auth', () => {
   beforeEach(() => {
     process.env['INPUT_URL'] = 'https://api.github.com'
     process.env['INPUT_HEADERS'] =
-      '{"content-type":"application/json", "Authorization": "Basic YWxhZGRpbjpvcGVuc2VzYW1l"}'
+      '{"content-type":"application/json", "Authorization": "Basic DummyToken123"}'
   })
 
   afterEach(() => {
