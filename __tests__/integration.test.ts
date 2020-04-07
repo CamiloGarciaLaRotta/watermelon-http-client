@@ -60,11 +60,13 @@ describe('when called with a GraphQL query', () => {
           emoji
          }
       }`
+    process.env['INPUT_HEADERS'] = '{"content-type":"application/json"}'
   })
 
   afterEach(() => {
     delete process.env['INPUT_URL']
     delete process.env['INPUT_GRAPHQL']
+    delete process.env['INPUT_HEADERS']
   })
 
   it('should output something if a query was supplied', async () => {
@@ -74,6 +76,30 @@ describe('when called with a GraphQL query', () => {
 
     expect(fakeSetOutput).toBeCalledWith('status', expect.anything())
     expect(fakeSetOutput).toBeCalledWith('response', expect.anything())
+  })
+})
+
+describe('when called with a custom header containing wrong auth', () => {
+  beforeEach(() => {
+    process.env['INPUT_URL'] = 'https://api.github.com'
+    process.env['INPUT_HEADERS'] =
+      '{"content-type":"application/json", "Authorization": "Basic DummyToken123"}'
+  })
+
+  afterEach(() => {
+    delete process.env['INPUT_URL']
+    delete process.env['INPUT_HEADERS']
+  })
+
+  it('should reply with a 401 Unauthorized', async () => {
+    const fakeSetOutput = jest.spyOn(core, 'setOutput')
+    const fakeLogError = jest.spyOn(core, 'error')
+
+    await run()
+
+    expect(fakeLogError).toHaveBeenCalledTimes(3)
+    expect(fakeSetOutput).not.toHaveBeenCalled()
+    expect(fakeLogError).toBeCalledWith('response status: 401')
   })
 })
 

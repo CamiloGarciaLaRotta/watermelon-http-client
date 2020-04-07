@@ -11,6 +11,7 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 | url | Endpoint to query | https://api.github.com/graphql |
 | method | HTTP method | `GET` |
 | data | HTTP request payload |  |
+| headers | HTTP headers | Empty by default. If no headers are supplied, GraphQL queries will be sent with `{'Content-Type': 'application/json'}` |
 | graphql | GraphQL query to execute. If defined, the `data` field is automatically populated with this payload and the `method` is set to `POST` |
 
 

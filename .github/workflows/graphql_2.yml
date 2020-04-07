@@ -1,0 +1,38 @@
+name: Test GitHub GraphQL API
+on: push
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - name: Get the sources
+        uses: actions/checkout@v2
+      - name: Execute a dummy query
+        id: query
+        uses: ./
+        with:
+          headers: '{"Authorization": "bearer ${{ secrets.TOKEN }}" }'
+          graphql: |
+            query {
+              repository(name: "watermelon-http-client", owner:"camilogarcialarotta"){
+                issues(first:1) {
+                  nodes{
+                    title
+                    state
+                  }
+                }
+              }
+            }
+      - name: Print the response status
+        run: echo ${{ steps.query.outputs.status }}
+        shell: bash
+      - name: Print the response headers
+        run: echo ${{ steps.query.outputs.headers }}
+        shell: bash
+      - name: Print the response payload
+        run: echo ${{ steps.query.outputs.response }}
+        shell: bash
