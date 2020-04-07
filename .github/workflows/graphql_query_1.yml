@@ -1,4 +1,4 @@
-name: Test GitHub GraphQL API
+name: Test GraphQL - query
 on: push
 
 jobs:
@@ -15,16 +15,12 @@ jobs:
         id: query
         uses: ./
         with:
-          headers: '{"Authorization": "bearer ${{ secrets.TOKEN }}" }'
+          url: 'https://countries.trevorblades.com/'
           graphql: |
-            query {
-              repository(name: "watermelon-http-client", owner:"camilogarcialarotta"){
-                issues(first:1) {
-                  nodes{
-                    title
-                    state
-                  }
-                }
+            {
+              country(code: "CO") {
+                name
+                emoji
               }
             }
       - name: Print the response status

@@ -1,0 +1,48 @@
+name: Test GitHub GraphQL API - Mutation
+on: push
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - name: Get the sources
+        uses: actions/checkout@v2
+      - name: Execute a dummy mutation
+        id: mutation
+        uses: ./
+        with:
+          headers: '{"Authorization": "bearer ${{ secrets.TOKEN }}" }'
+          graphql: |
+            mutation addRocketEmoji($reaction:AddReactionInput!) {
+              addReaction(input:$reaction) {
+                reaction {
+                  content
+                }
+                subject {
+                  id
+                }
+              }
+            }
+          variables: |
+            {
+              "reaction": {
+                "subjectId":"${{ secrets.ISSUE_ID }}",
+                "content":"ROCKET"
+              }
+            }
+      - name: Print the response status
+        run: echo ${{ steps.mutation.outputs.status }}
+        shell: bash
+      - name: Print the response headers
+        run: echo ${{ steps.mutation.outputs.headers }}
+        shell: bash
+      - name: Print the response payload
+        run: echo ${{ steps.mutation.outputs.response }}
+        shell: bash
+      - name: see the emoji! 🚀
+        run: echo "https://github.com/CamiloGarciaLaRotta/watermelon-http-client/issues/1"
+        shell: bash
