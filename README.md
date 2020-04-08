@@ -57,5 +57,5 @@ A Typescript Action that performs HTTP requests within your workflow. It support
     data: '{ "title": "dummy-todo", "userId": 1, "completed": false }'
   ```
   
-  ### Contributing
-  See the [contribution guidelines](CONTRIBUTING.md) ❤️
+### Contributing
+See the [contribution guidelines](CONTRIBUTING.md) ❤️
