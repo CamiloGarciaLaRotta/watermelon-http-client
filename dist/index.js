@@ -875,7 +875,8 @@ function run() {
                 if (isEmpty(inputHeaders)) {
                     inputHeaders = { 'Content-Type': 'application/json' };
                 }
-                core.info(`graphql:\n${graphql}`);
+                core.info(`graphql: ${graphql}`);
+                core.info(`variables: ${variables}`);
             }
             core.info(`url: ${url}`);
             core.info(`method: ${method}`);
@@ -889,12 +890,12 @@ function run() {
             if (status < 200 || status >= 300) {
                 core.error(`response status: ${status}`);
                 core.error(`response headers: ${responseHeaders}`);
-                core.error(`response body:\n${response}`);
+                core.error(`response body: ${response}`);
                 throw new Error(`request failed: ${response}`);
             }
             core.info(`response status: ${status}`);
             core.info(`response headers: ${responseHeaders}`);
-            core.info(`response body:\n${response}`);
+            core.info(`response body: ${response}`);
             core.setOutput('status', `${status}`);
             core.setOutput('headers', `${responseHeaders}`);
             core.setOutput('response', `${response}`);
