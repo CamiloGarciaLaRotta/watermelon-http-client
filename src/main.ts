@@ -7,9 +7,10 @@ export async function run(): Promise<void> {
   try {
     const url: string = core.getInput('url')
     let method: string = core.getInput('method')
+    const rawInputHeaders: string = core.getInput('headers')
     let data: string = core.getInput('data')
     const graphql: string = core.getInput('graphql')
-    const rawInputHeaders: string = core.getInput('headers')
+    const variables: string = core.getInput('variables')
 
     let inputHeaders: Object
     if (rawInputHeaders.length > 0) {
@@ -20,7 +21,7 @@ export async function run(): Promise<void> {
 
     if (graphql.length !== 0) {
       method = 'POST'
-      data = graphqlPayloadFor(graphql)
+      data = graphqlPayloadFor(graphql, variables)
 
       if (isEmpty(inputHeaders)) {
         inputHeaders = {'Content-Type': 'application/json'}
