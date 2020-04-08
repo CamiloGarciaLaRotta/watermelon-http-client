@@ -1,7 +1,5 @@
-import axios from 'axios'
 import * as core from '@actions/core'
 import {run} from '../src/main'
-import {when} from 'jest-when'
 
 jest.setTimeout(600000)
 
