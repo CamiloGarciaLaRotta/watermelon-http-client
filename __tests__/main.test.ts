@@ -19,7 +19,7 @@ describe('when running the action with valid inputs', () => {
         Promise.resolve([200, {some: 'response-headers'}, {some: 'JSON'}])
       )
 
-    process.env['INPUT_URL'] = 'url'
+    process.env['INPUT_URL'] = 'https://api.github.com'
   })
 
   afterEach(() => {
@@ -66,7 +66,7 @@ describe('when running the action with valid inputs', () => {
     await run()
 
     expect(infoMock.mock.calls).toEqual([
-      ['url: url'],
+      ['url: https://api.github.com'],
       ['method: GET'],
       ['headers: {"some":"input-headers"}'],
       ['response status: 200'],
@@ -93,7 +93,7 @@ describe('when running the action with valid inputs', () => {
     await run()
 
     expect(infoMock.mock.calls).toEqual([
-      ['url: url'],
+      ['url: https://api.github.com'],
       ['method: POST'],
       ['headers: {"some":"input-headers"}'],
       ['data: {"some": "data"}'],
