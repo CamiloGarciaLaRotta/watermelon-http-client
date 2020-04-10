@@ -3,15 +3,15 @@ import axios, {Method} from 'axios'
 /**
  * Send an HTTP request with JSON as content and response type.
  *
- * @param url - the endpoint to send the request to
- * @param method - the HTTP method for the request. e.g `get, GET, post, POST`
- * @param data - the JSON encoded payload if any
- * @param headers - the JSON encoded custom headers
- * @returns `[status code, response body]`
+ * @param {string} url - The endpoint to send the request to.
+ * @param {Method} method - The HTTP method for the request, e.g `get, GET, post, POST`.
+ * @param {string} data - The JSON encoded payload if any.
+ * @param {object} headers - The JSON encoded custom headers.
+ * @returns {Array} `[status code, response body]`.
  */
 export async function request(
   url: string,
-  method: Method, //using Method from axios
+  method: Method,
   data = '{}',
   headers: Object = {}
 ): Promise<[number, Object, Object]> {
