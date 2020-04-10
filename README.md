@@ -13,9 +13,10 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 | data | HTTP request payload |  |
 | headers | HTTP headers | Empty by default. If no headers are supplied, GraphQL queries will be sent with `{'Content-Type': 'application/json'}` |
 | graphql | GraphQL query to execute. If defined, the `data` field is automatically populated with this payload and the `method` is set to `POST` |
-
+| variables | variables for a GraphQL mutation in JSON format | '{}' |
 
 ### Outputs
+
 | Name | Description |
 | --- | --- |
 | `status` | Numeric response status code | 
@@ -23,9 +24,6 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 | `response` | JSON encoded response |
 
 ### Examples
-
-
-
 
 - [`GraphQL`](.github/workflows/graphql.yml)
   ```yaml

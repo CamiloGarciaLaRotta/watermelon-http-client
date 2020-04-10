@@ -858,9 +858,10 @@ function run() {
         try {
             const url = core.getInput('url');
             let method = core.getInput('method');
+            const rawInputHeaders = core.getInput('headers');
             let data = core.getInput('data');
             const graphql = core.getInput('graphql');
-            const rawInputHeaders = core.getInput('headers');
+            const variables = core.getInput('variables');
             let inputHeaders;
             if (rawInputHeaders.length > 0) {
                 inputHeaders = JSON.parse(rawInputHeaders);
@@ -870,11 +871,12 @@ function run() {
             }
             if (graphql.length !== 0) {
                 method = 'POST';
-                data = graphql_1.graphqlPayloadFor(graphql);
+                data = graphql_1.graphqlPayloadFor(graphql, variables);
                 if (isEmpty(inputHeaders)) {
                     inputHeaders = { 'Content-Type': 'application/json' };
                 }
-                core.info(`graphql:\n${graphql}`);
+                core.info(`graphql: ${graphql}`);
+                core.info(`variables: ${variables}`);
             }
             core.info(`url: ${url}`);
             core.info(`method: ${method}`);
@@ -888,12 +890,12 @@ function run() {
             if (status < 200 || status >= 300) {
                 core.error(`response status: ${status}`);
                 core.error(`response headers: ${responseHeaders}`);
-                core.error(`response body:\n${response}`);
+                core.error(`response body: ${response}`);
                 throw new Error(`request failed: ${response}`);
             }
             core.info(`response status: ${status}`);
             core.info(`response headers: ${responseHeaders}`);
-            core.info(`response body:\n${response}`);
+            core.info(`response body: ${response}`);
             core.setOutput('status', `${status}`);
             core.setOutput('headers', `${responseHeaders}`);
             core.setOutput('response', `${response}`);
@@ -1770,7 +1772,7 @@ module.exports = require("assert");
 /***/ 361:
 /***/ (function(module) {
 
-module.exports = {"_args":[["axios@0.19.2","/home/titoine54/watermelon-http-client"]],"_from":"axios@0.19.2","_id":"axios@0.19.2","_inBundle":false,"_integrity":"sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.19.2","name":"axios","escapedName":"axios","rawSpec":"0.19.2","saveSpec":null,"fetchSpec":"0.19.2"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.19.2.tgz","_spec":"0.19.2","_where":"/home/titoine54/watermelon-http-client","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"1.5.10"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"bundlesize":"^0.17.0","coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.0.2","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^20.1.0","grunt-karma":"^2.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^1.0.18","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^1.3.0","karma-chrome-launcher":"^2.2.0","karma-coverage":"^1.1.1","karma-firefox-launcher":"^1.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-opera-launcher":"^1.0.0","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^1.2.0","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^1.7.0","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^5.2.0","sinon":"^4.5.0","typescript":"^2.8.1","url-search-params":"^0.10.0","webpack":"^1.13.1","webpack-dev-server":"^1.14.1"},"homepage":"https://github.com/axios/axios","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test && bundlesize","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","version":"0.19.2"};
+module.exports = {"_from":"axios@^0.19.2","_id":"axios@0.19.2","_inBundle":false,"_integrity":"sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"axios@^0.19.2","name":"axios","escapedName":"axios","rawSpec":"^0.19.2","saveSpec":null,"fetchSpec":"^0.19.2"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.19.2.tgz","_shasum":"3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27","_spec":"axios@^0.19.2","_where":"/Users/camilogarcialarotta/playground/graphql-client-action","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundleDependencies":false,"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"1.5.10"},"deprecated":false,"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"bundlesize":"^0.17.0","coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.0.2","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^20.1.0","grunt-karma":"^2.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^1.0.18","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^1.3.0","karma-chrome-launcher":"^2.2.0","karma-coverage":"^1.1.1","karma-firefox-launcher":"^1.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-opera-launcher":"^1.0.0","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^1.2.0","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^1.7.0","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^5.2.0","sinon":"^4.5.0","typescript":"^2.8.1","url-search-params":"^0.10.0","webpack":"^1.13.1","webpack-dev-server":"^1.14.1"},"homepage":"https://github.com/axios/axios","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test && bundlesize","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","version":"0.19.2"};
 
 /***/ }),
 
@@ -2174,7 +2176,6 @@ exports.getState = getState;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const MUTATION_OP = 'mutation';
 /**
  * Returns the stringified JSON payload which corresponds to the GraphQL operation.
  * If no operation is explicitly defined, it will default to `query`.
@@ -2182,13 +2183,17 @@ const MUTATION_OP = 'mutation';
  * @param data - the raw HTTP request payload
  * @returns `{"query": data}` or `{"mutation": data}`
  */
-function graphqlPayloadFor(data) {
-    if (data.startsWith(MUTATION_OP)) {
-        return JSON.stringify({ mutation: data });
-    }
-    return JSON.stringify({ query: data });
+function graphqlPayloadFor(rawData, rawVariables) {
+    const data = minify(rawData);
+    const variables = minify(rawVariables);
+    return JSON.stringify({ query: data, variables: JSON.parse(variables) });
 }
 exports.graphqlPayloadFor = graphqlPayloadFor;
+/**
+ * Returns the minified version of the string.
+ * e.g. no line breaks and single spaces between each word
+ */
+const minify = (s) => s.replace(/\s+/g, ' ').trim();
 
 
 /***/ }),

@@ -8,12 +8,15 @@ inputs:
   method:
     description: HTTP method
     default: get
+  headers:
+    description: HTTP custom headers
   data:
     description: HTTP request payload
   graphql:
     description: GraphQL query or mutation to execute. If defined, the 'data' field is automatically populated with the this payload and the 'method' is set to POST
-  headers:
-    description: HTTP custom headers
+  variables:
+    description: variables for a GraphQL mutation in JSON format
+    default: '{}'
 outputs:
   status:
     description: The status of the HTTP request

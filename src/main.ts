@@ -7,9 +7,10 @@ export async function run(): Promise<void> {
   try {
     const url: string = core.getInput('url')
     let method: string = core.getInput('method')
+    const rawInputHeaders: string = core.getInput('headers')
     let data: string = core.getInput('data')
     const graphql: string = core.getInput('graphql')
-    const rawInputHeaders: string = core.getInput('headers')
+    const variables: string = core.getInput('variables')
 
     let inputHeaders: Object
     if (rawInputHeaders.length > 0) {
@@ -20,13 +21,14 @@ export async function run(): Promise<void> {
 
     if (graphql.length !== 0) {
       method = 'POST'
-      data = graphqlPayloadFor(graphql)
+      data = graphqlPayloadFor(graphql, variables)
 
       if (isEmpty(inputHeaders)) {
         inputHeaders = {'Content-Type': 'application/json'}
       }
 
-      core.info(`graphql:\n${graphql}`)
+      core.info(`graphql: ${graphql}`)
+      core.info(`variables: ${variables}`)
     }
 
     core.info(`url: ${url}`)
@@ -49,14 +51,14 @@ export async function run(): Promise<void> {
     if (status < 200 || status >= 300) {
       core.error(`response status: ${status}`)
       core.error(`response headers: ${responseHeaders}`)
-      core.error(`response body:\n${response}`)
+      core.error(`response body: ${response}`)
 
       throw new Error(`request failed: ${response}`)
     }
 
     core.info(`response status: ${status}`)
     core.info(`response headers: ${responseHeaders}`)
-    core.info(`response body:\n${response}`)
+    core.info(`response body: ${response}`)
 
     core.setOutput('status', `${status}`)
     core.setOutput('headers', `${responseHeaders}`)
