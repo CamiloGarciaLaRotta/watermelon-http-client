@@ -12,7 +12,7 @@ describe('when running the action with valid inputs', () => {
     jest.resetModules()
 
     when(fakeRequest)
-      .calledWith('url', expect.anything(), expect.anything(), {
+      .calledWith(expect.anything(), expect.anything(), expect.anything(), {
         some: 'input-headers'
       })
       .mockReturnValue(
@@ -39,7 +39,7 @@ describe('when running the action with valid inputs', () => {
     expect(infoMock.mock.calls).toEqual([
       ['graphql: { some { mutation } }'],
       ['variables: {"some": "variables"}'],
-      ['url: url'],
+      ['url: https://api.github.com/graphql'],
       ['method: POST'],
       ['headers: {"some":"input-headers"}'],
       [
