@@ -4,7 +4,7 @@ author: "Camilo Garcia La Rotta"
 inputs:
   url:
     description: Endpoint to query
-    default: "https://api.github.com/graphql"
+    default: "https://api.github.com"
   method:
     description: HTTP method
     default: get
