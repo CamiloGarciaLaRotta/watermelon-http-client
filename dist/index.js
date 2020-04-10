@@ -2180,18 +2180,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Returns the stringified JSON payload which corresponds to the GraphQL operation.
  * If no operation is explicitly defined, it will default to `query`.
  *
- * @param data - the raw HTTP request payload
- * @returns `{"query": data}` or `{"mutation": data}`
+ * @param {string} rawQuery - The stringified GraphQL query or mutation.
+ * @param {string} rawVariables - The JSON mutation variables.
+ * @returns {string} `{"query": <GraphQL query>, "variables": <variables>}`.
  */
-function graphqlPayloadFor(rawData, rawVariables) {
-    const data = minify(rawData);
+function graphqlPayloadFor(rawQuery, rawVariables) {
+    const query = minify(rawQuery);
     const variables = minify(rawVariables);
-    return JSON.stringify({ query: data, variables: JSON.parse(variables) });
+    return JSON.stringify({ query, variables: JSON.parse(variables) });
 }
 exports.graphqlPayloadFor = graphqlPayloadFor;
 /**
- * Returns the minified version of the string.
- * e.g. no line breaks and single spaces between each word
+ * Replace multiple spaces and newlines from a string.
+ *
+ * @param {string} s - The string to be minified.
+ * @returns {string} The single line, single spaced string.
  */
 const minify = (s) => s.replace(/\s+/g, ' ').trim();
 
@@ -2744,14 +2747,13 @@ const axios_1 = __importDefault(__webpack_require__(53));
 /**
  * Send an HTTP request with JSON as content and response type.
  *
- * @param url - the endpoint to send the request to
- * @param method - the HTTP method for the request. e.g `get, GET, post, POST`
- * @param data - the JSON encoded payload if any
- * @param headers - the JSON encoded custom headers
- * @returns `[status code, response body]`
+ * @param {string} url - The endpoint to send the request to.
+ * @param {Method} method - The HTTP method for the request, e.g `get, GET, post, POST`.
+ * @param {string} data - The JSON encoded payload if any.
+ * @param {object} headers - The JSON encoded custom headers.
+ * @returns {Array} `[status code, response body]`.
  */
-function request(url, method, //using Method from axios
-data = '{}', headers = {}) {
+function request(url, method, data = '{}', headers = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield axios_1.default.request({
