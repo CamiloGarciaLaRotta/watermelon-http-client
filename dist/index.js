@@ -856,7 +856,7 @@ const graphql_1 = __webpack_require__(500);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const url = core.getInput('url');
+            let url = core.getInput('url');
             let method = core.getInput('method');
             const rawInputHeaders = core.getInput('headers');
             let data = core.getInput('data');
@@ -870,6 +870,9 @@ function run() {
                 inputHeaders = {};
             }
             if (graphql.length !== 0) {
+                if (!isCustomURL(url)) {
+                    url = 'https://api.github.com/graphql';
+                }
                 method = 'POST';
                 data = graphql_1.graphqlPayloadFor(graphql, variables);
                 if (isEmpty(inputHeaders)) {
@@ -907,6 +910,7 @@ function run() {
 }
 exports.run = run;
 const isEmpty = (o) => Object.keys(o).length === 0;
+const isCustomURL = (url) => url !== 'https://api.github.com';
 run();
 
 

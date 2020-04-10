@@ -5,7 +5,7 @@ import {graphqlPayloadFor} from './graphql'
 
 export async function run(): Promise<void> {
   try {
-    const url: string = core.getInput('url')
+    let url: string = core.getInput('url')
     let method: string = core.getInput('method')
     const rawInputHeaders: string = core.getInput('headers')
     let data: string = core.getInput('data')
@@ -20,6 +20,10 @@ export async function run(): Promise<void> {
     }
 
     if (graphql.length !== 0) {
+      if (!isCustomURL(url)) {
+        url = 'https://api.github.com/graphql'
+      }
+
       method = 'POST'
       data = graphqlPayloadFor(graphql, variables)
 
@@ -69,5 +73,6 @@ export async function run(): Promise<void> {
 }
 
 const isEmpty = (o: Object): Boolean => Object.keys(o).length === 0
+const isCustomURL = (url: string): Boolean => url !== 'https://api.github.com'
 
 run()
