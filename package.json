@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@types/jest": "^25.1.5",
-    "@types/jest-when": "^2.7.0",
     "@types/node": "^13.11.0",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "@zeit/ncc": "^0.22.0",
     "acorn": ">=6.4.1",
@@ -42,8 +42,6 @@
     "graphql": "^14.0.0",
     "jest": "^25.2.7",
     "jest-circus": "^25.3.0",
-    "jest-when": "^2.7.0",
-    "js-yaml": "^3.13.1",
     "kind-of": ">=6.0.3",
     "minimist": ">=1.2.2",
     "prettier": "^2.0.3",

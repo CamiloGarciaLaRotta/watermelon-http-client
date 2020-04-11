@@ -452,151 +452,7 @@ module.exports = require("os");
 
 /***/ }),
 
-/***/ 133:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(35);
-
-function encode(val) {
-  return encodeURIComponent(val).
-    replace(/%40/gi, '@').
-    replace(/%3A/gi, ':').
-    replace(/%24/g, '$').
-    replace(/%2C/gi, ',').
-    replace(/%20/g, '+').
-    replace(/%5B/gi, '[').
-    replace(/%5D/gi, ']');
-}
-
-/**
- * Build a URL by appending params to the end
- *
- * @param {string} url The base of the url (e.g., http://www.google.com)
- * @param {object} [params] The params to be appended
- * @returns {string} The formatted url
- */
-module.exports = function buildURL(url, params, paramsSerializer) {
-  /*eslint no-param-reassign:0*/
-  if (!params) {
-    return url;
-  }
-
-  var serializedParams;
-  if (paramsSerializer) {
-    serializedParams = paramsSerializer(params);
-  } else if (utils.isURLSearchParams(params)) {
-    serializedParams = params.toString();
-  } else {
-    var parts = [];
-
-    utils.forEach(params, function serialize(val, key) {
-      if (val === null || typeof val === 'undefined') {
-        return;
-      }
-
-      if (utils.isArray(val)) {
-        key = key + '[]';
-      } else {
-        val = [val];
-      }
-
-      utils.forEach(val, function parseValue(v) {
-        if (utils.isDate(v)) {
-          v = v.toISOString();
-        } else if (utils.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        parts.push(encode(key) + '=' + encode(v));
-      });
-    });
-
-    serializedParams = parts.join('&');
-  }
-
-  if (serializedParams) {
-    var hashmarkIndex = url.indexOf('#');
-    if (hashmarkIndex !== -1) {
-      url = url.slice(0, hashmarkIndex);
-    }
-
-    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
-  }
-
-  return url;
-};
-
-
-/***/ }),
-
-/***/ 137:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-"use strict";
-
-
-var Cancel = __webpack_require__(826);
-
-/**
- * A `CancelToken` is an object that can be used to request cancellation of an operation.
- *
- * @class
- * @param {Function} executor The executor function.
- */
-function CancelToken(executor) {
-  if (typeof executor !== 'function') {
-    throw new TypeError('executor must be a function.');
-  }
-
-  var resolvePromise;
-  this.promise = new Promise(function promiseExecutor(resolve) {
-    resolvePromise = resolve;
-  });
-
-  var token = this;
-  executor(function cancel(message) {
-    if (token.reason) {
-      // Cancellation has already been requested
-      return;
-    }
-
-    token.reason = new Cancel(message);
-    resolvePromise(token.reason);
-  });
-}
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-CancelToken.prototype.throwIfRequested = function throwIfRequested() {
-  if (this.reason) {
-    throw this.reason;
-  }
-};
-
-/**
- * Returns an object that contains a new `CancelToken` and a function that, when called,
- * cancels the `CancelToken`.
- */
-CancelToken.source = function source() {
-  var cancel;
-  var token = new CancelToken(function executor(c) {
-    cancel = c;
-  });
-  return {
-    token: token,
-    cancel: cancel
-  };
-};
-
-module.exports = CancelToken;
-
-
-/***/ }),
-
-/***/ 138:
+/***/ 110:
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -828,6 +684,181 @@ function coerce(val) {
 
 /***/ }),
 
+/***/ 133:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(35);
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%40/gi, '@').
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    var hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+
+/***/ }),
+
+/***/ 137:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+"use strict";
+
+
+var Cancel = __webpack_require__(826);
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+
+/***/ }),
+
+/***/ 138:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Replace multiple spaces and newlines from a string.
+ *
+ * @param {string} s - The string to be minified.
+ * @returns {string} The single line, single spaced string.
+ */
+const minify = (s) => s.replace(/\s+/g, ' ').trim();
+/**
+ * Returns the stringified JSON payload which corresponds to the GraphQL operation.
+ * If no operation is explicitly defined, it will default to `query`.
+ *
+ * @param {string} rawQuery - The stringified GraphQL query or mutation.
+ * @param {string} rawVariables - The JSON mutation variables.
+ * @returns {string} `{"query": <GraphQL query>, "variables": <variables>}`.
+ */
+function graphqlPayloadFor(rawQuery, rawVariables) {
+    const query = minify(rawQuery);
+    const variables = minify(rawVariables);
+    return JSON.stringify({ query, variables: JSON.parse(variables) });
+}
+exports.graphqlPayloadFor = graphqlPayloadFor;
+
+
+/***/ }),
+
 /***/ 198:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -842,71 +873,72 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
+const core_1 = __webpack_require__(470);
+const graphql_1 = __webpack_require__(138);
+const log_1 = __webpack_require__(732);
 const http_1 = __webpack_require__(617);
-const graphql_1 = __webpack_require__(500);
+const isEmpty = (o) => Object.keys(o).length === 0;
+const isDefined = (input) => input !== '{}' && input.length > 0;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const url = core.getInput('url');
-            let method = core.getInput('method');
-            const rawInputHeaders = core.getInput('headers');
-            let data = core.getInput('data');
-            const graphql = core.getInput('graphql');
-            const variables = core.getInput('variables');
+            const verbose = core_1.getInput('verbose') === 'true';
+            const log = new log_1.Logger(verbose);
+            const url = core_1.getInput('url');
+            let method = core_1.getInput('method');
+            const rawInputHeaders = core_1.getInput('headers');
+            let data = core_1.getInput('data');
+            const graphql = core_1.getInput('graphql');
+            const variables = core_1.getInput('variables');
+            const operationName = core_1.getInput('operation_name');
             let inputHeaders;
-            if (rawInputHeaders.length > 0) {
+            if (isDefined(rawInputHeaders)) {
                 inputHeaders = JSON.parse(rawInputHeaders);
             }
             else {
                 inputHeaders = {};
             }
-            if (graphql.length !== 0) {
+            if (isDefined(graphql)) {
                 method = 'POST';
                 data = graphql_1.graphqlPayloadFor(graphql, variables);
                 if (isEmpty(inputHeaders)) {
                     inputHeaders = { 'Content-Type': 'application/json' };
                 }
-                core.info(`graphql: ${graphql}`);
-                core.info(`variables: ${variables}`);
+                log.info('graphql', graphql);
+                log.info('variables', variables);
+                if (isDefined(operationName)) {
+                    log.info('operation_name', operationName);
+                }
             }
-            core.info(`url: ${url}`);
-            core.info(`method: ${method}`);
-            core.info(`headers: ${JSON.stringify(inputHeaders)}`);
-            if (data.length !== 0) {
-                core.info(`data: ${data}`);
+            log.info('url', url);
+            log.info('method', method);
+            log.info('headers', JSON.stringify(inputHeaders));
+            if (isDefined(data)) {
+                log.info('data', data);
             }
             const [status, rawResponseHeaders, rawResponse] = yield http_1.request(url, method, data, inputHeaders);
             const responseHeaders = JSON.stringify(rawResponseHeaders);
             const response = JSON.stringify(rawResponse);
             if (status < 200 || status >= 300) {
-                core.error(`response status: ${status}`);
-                core.error(`response headers: ${responseHeaders}`);
-                core.error(`response body: ${response}`);
+                log.error('response status', status);
+                log.error('response headers', responseHeaders);
+                log.error('response body', response);
                 throw new Error(`request failed: ${response}`);
             }
-            core.info(`response status: ${status}`);
-            core.info(`response headers: ${responseHeaders}`);
-            core.info(`response body: ${response}`);
-            core.setOutput('status', `${status}`);
-            core.setOutput('headers', `${responseHeaders}`);
-            core.setOutput('response', `${response}`);
+            log.info('response status', status);
+            log.info('response headers', responseHeaders);
+            log.info('response body', response);
+            core_1.setOutput('status', `${status}`);
+            core_1.setOutput('headers', `${responseHeaders}`);
+            core_1.setOutput('response', `${response}`);
         }
         catch (error) {
-            core.setFailed(error.message);
+            core_1.setFailed(error.message);
         }
     });
 }
 exports.run = run;
-const isEmpty = (o) => Object.keys(o).length === 0;
 run();
 
 
@@ -1116,7 +1148,7 @@ module.exports = function xhrAdapter(config) {
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(138);
+exports = module.exports = __webpack_require__(110);
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -1524,7 +1556,7 @@ var util = __webpack_require__(669);
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(138);
+exports = module.exports = __webpack_require__(110);
 exports.init = init;
 exports.log = log;
 exports.formatArgs = formatArgs;
@@ -1746,7 +1778,7 @@ axios.create = function create(instanceConfig) {
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(826);
 axios.CancelToken = __webpack_require__(137);
-axios.isCancel = __webpack_require__(732);
+axios.isCancel = __webpack_require__(492);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -2170,33 +2202,15 @@ exports.getState = getState;
 
 /***/ }),
 
-/***/ 500:
-/***/ (function(__unusedmodule, exports) {
+/***/ 492:
+/***/ (function(module) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Returns the stringified JSON payload which corresponds to the GraphQL operation.
- * If no operation is explicitly defined, it will default to `query`.
- *
- * @param {string} rawQuery - The stringified GraphQL query or mutation.
- * @param {string} rawVariables - The JSON mutation variables.
- * @returns {string} `{"query": <GraphQL query>, "variables": <variables>}`.
- */
-function graphqlPayloadFor(rawQuery, rawVariables) {
-    const query = minify(rawQuery);
-    const variables = minify(rawVariables);
-    return JSON.stringify({ query, variables: JSON.parse(variables) });
-}
-exports.graphqlPayloadFor = graphqlPayloadFor;
-/**
- * Replace multiple spaces and newlines from a string.
- *
- * @param {string} s - The string to be minified.
- * @returns {string} The single line, single spaced string.
- */
-const minify = (s) => s.replace(/\s+/g, ' ').trim();
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
 
 
 /***/ }),
@@ -3406,14 +3420,31 @@ module.exports = function bind(fn, thisArg) {
 /***/ }),
 
 /***/ 732:
-/***/ (function(module) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
 
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = __webpack_require__(470);
+/**
+ * Thin wrapper around the stdlib logger.
+ * It limits the available logging levels to 'info' and 'error'.
+ * It will only log to 'info' if verbose is set to true.
+ */
+class Logger {
+    constructor(verbose = false) {
+        this.verbose = verbose;
+    }
+    info(key, value) {
+        if (!this.verbose)
+            return;
+        core_1.info(`${key}: ${value}`);
+    }
+    error(key, value) {
+        core_1.error(`${key}: ${value}`);
+    }
+}
+exports.Logger = Logger;
 
 
 /***/ }),
@@ -3775,7 +3806,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 var utils = __webpack_require__(35);
 var transformData = __webpack_require__(589);
-var isCancel = __webpack_require__(732);
+var isCancel = __webpack_require__(492);
 var defaults = __webpack_require__(529);
 
 /**

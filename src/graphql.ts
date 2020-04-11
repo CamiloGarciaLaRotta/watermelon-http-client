@@ -1,4 +1,12 @@
 /**
+ * Replace multiple spaces and newlines from a string.
+ *
+ * @param {string} s - The string to be minified.
+ * @returns {string} The single line, single spaced string.
+ */
+const minify = (s: string): string => s.replace(/\s+/g, ' ').trim()
+
+/**
  * Returns the stringified JSON payload which corresponds to the GraphQL operation.
  * If no operation is explicitly defined, it will default to `query`.
  *
@@ -14,11 +22,3 @@ export function graphqlPayloadFor(
   const variables = minify(rawVariables)
   return JSON.stringify({query, variables: JSON.parse(variables)})
 }
-
-/**
- * Replace multiple spaces and newlines from a string.
- *
- * @param {string} s - The string to be minified.
- * @returns {string} The single line, single spaced string.
- */
-const minify = (s: string): string => s.replace(/\s+/g, ' ').trim()
