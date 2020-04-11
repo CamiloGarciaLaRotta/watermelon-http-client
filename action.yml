@@ -17,6 +17,8 @@ inputs:
   variables:
     description: variables for a GraphQL mutation in JSON format
     default: '{}'
+  operation_name:
+    description: name of the entrypoint GraphQL operation if multiple are defined in `graphql`
   verbose:
     description: wether to print info-level statements or not
     default: false
