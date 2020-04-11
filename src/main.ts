@@ -6,13 +6,14 @@ import {request} from './http'
 
 const isEmpty = (o: Object): boolean => Object.keys(o).length === 0
 const isDefined = (input: string): boolean => input !== '{}' && input.length > 0
+const isCustomURL = (url: string): Boolean => url !== 'https://api.github.com'
 
 export async function run(): Promise<void> {
   try {
     const verbose: boolean = getInput('verbose') === 'true'
     const log = new Logger(verbose)
 
-    const url: string = getInput('url')
+    let url: string = getInput('url')
     let method: string = getInput('method')
     const rawInputHeaders: string = getInput('headers')
     let data: string = getInput('data')
@@ -29,6 +30,9 @@ export async function run(): Promise<void> {
     }
 
     if (isDefined(graphql)) {
+      if (!isCustomURL(url)) {
+        url = 'https://api.github.com/graphql'
+      }
       method = 'POST'
       data = graphqlPayloadFor(graphql, variables)
 

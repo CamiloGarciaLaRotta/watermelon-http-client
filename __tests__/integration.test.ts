@@ -116,7 +116,6 @@ describe('when action fails', () => {
     const errorMock = jest.spyOn(Logger.prototype, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')
 
-    // does not throw exception
     await run()
 
     // once for each of the following: status, headers, response
@@ -135,7 +134,6 @@ describe('when action fails', () => {
     const errorMock = jest.spyOn(Logger.prototype, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')
 
-    // does not throw exception
     await run()
 
     // once for each of the following: status, headers, response
@@ -147,13 +145,11 @@ describe('when action fails', () => {
   })
 
   it('should handle action-side errors gracefully ', async () => {
-    // request won't be generated because it's an invalid protocol
     process.env['INPUT_URL'] = 'ftp://>invalid|url<'
 
     const fakeLogError = jest.spyOn(core, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')
 
-    // does not throw exception
     await run()
 
     // once for each of the following: status, headers, response
