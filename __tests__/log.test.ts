@@ -21,7 +21,7 @@ describe('the logging wrapper', () => {
     log.info('foo', 'bar')
     log.info('num', 42)
 
-    expect(infoMock.mock.calls).toEqual([])
+    expect(infoMock).not.toHaveBeenCalled()
   })
 
   it('should always print error-level statements', () => {

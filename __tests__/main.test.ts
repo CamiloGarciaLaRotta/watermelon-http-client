@@ -20,154 +20,101 @@ describe('when running the action with valid inputs', () => {
         Promise.resolve([200, {some: 'response-headers'}, {some: 'JSON'}])
       )
 
+    process.env['INPUT_VERBOSE'] = 'true'
     process.env['INPUT_URL'] = 'url'
+    process.env['INPUT_METHOD'] = 'GET'
+    process.env['INPUT_HEADERS'] = '{"some": "input-headers"}'
   })
 
   afterEach(() => {
-    delete process.env['INPUT_URL']
-  })
-
-  it('should log the correct values for GraphQL', async () => {
-    process.env['INPUT_VERBOSE'] = 'true'
-    process.env['INPUT_METHOD'] = 'GET'
-    process.env['INPUT_GRAPHQL'] = '{ some { mutation } }'
-    process.env['INPUT_VARIABLES'] = '{"some": "variables"}'
-    process.env['INPUT_HEADERS'] = '{"some": "input-headers"}'
-
-    const outputMock = jest.spyOn(core, 'setOutput')
-    const infoMock = (Logger.prototype.info = jest.fn())
-
-    await run()
-
-    expect(infoMock).toHaveBeenNthCalledWith(
-      1,
-      'graphql',
-      '{ some { mutation } }'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(
-      2,
-      'variables',
-      '{"some": "variables"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(3, 'url', 'url')
-    expect(infoMock).toHaveBeenNthCalledWith(4, 'method', 'POST')
-    expect(infoMock).toHaveBeenNthCalledWith(
-      5,
-      'headers',
-      '{"some":"input-headers"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(
-      6,
-      'data',
-      '{"query":"{ some { mutation } }","variables":{"some":"variables"}}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(7, 'response status', 200)
-    expect(infoMock).toHaveBeenNthCalledWith(
-      8,
-      'response headers',
-      '{"some":"response-headers"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(
-      9,
-      'response body',
-      '{"some":"JSON"}'
-    )
-
-    expect(outputMock).toHaveBeenNthCalledWith(1, 'status', '200')
-    expect(outputMock).toHaveBeenNthCalledWith(2, 'headers', expect.anything())
-    expect(outputMock).toHaveBeenNthCalledWith(3, 'response', '{"some":"JSON"}')
-
     delete process.env['INPUT_VERBOSE']
+    delete process.env['INPUT_URL']
     delete process.env['INPUT_METHOD']
-    delete process.env['INPUT_GRAPHQL']
-    delete process.env['INPUT_VARIABLES']
     delete process.env['INPUT_HEADERS']
   })
 
   it('should log the correct values for GET', async () => {
-    process.env['INPUT_VERBOSE'] = 'true'
-    process.env['INPUT_METHOD'] = 'GET'
-    process.env['INPUT_HEADERS'] = '{"some": "input-headers" }'
-
-    const fakeSetOutput = jest.spyOn(core, 'setOutput')
-    const infoMock = (Logger.prototype.info = jest.fn())
+    const infoMock = jest.spyOn(Logger.prototype, 'info')
+    const outputMock = jest.spyOn(core, 'setOutput')
 
     await run()
 
-    expect(infoMock).toHaveBeenNthCalledWith(1, 'url', 'url')
-    expect(infoMock).toHaveBeenNthCalledWith(2, 'method', 'GET')
-    expect(infoMock).toHaveBeenNthCalledWith(
-      3,
-      'headers',
-      '{"some":"input-headers"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(4, 'response status', 200)
-    expect(infoMock).toHaveBeenNthCalledWith(
-      5,
-      'response headers',
-      '{"some":"response-headers"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(
-      6,
-      'response body',
-      '{"some":"JSON"}'
-    )
+    expect(infoMock.mock.calls).toEqual([
+      ['url', 'url'],
+      ['method', 'GET'],
+      ['headers', '{"some":"input-headers"}'],
+      ['response status', 200],
+      ['response headers', '{"some":"response-headers"}'],
+      ['response body', '{"some":"JSON"}']
+    ])
 
-    expect(fakeSetOutput).toHaveBeenNthCalledWith(1, 'status', '200')
-    expect(fakeSetOutput).toHaveBeenNthCalledWith(
-      2,
-      'headers',
-      expect.anything()
-    )
-    expect(fakeSetOutput).toHaveBeenNthCalledWith(
-      3,
-      'response',
-      '{"some":"JSON"}'
-    )
-
-    delete process.env['INPUT_VERBOSE']
-    delete process.env['INPUT_METHOD']
-    delete process.env['INPUT_HEADERS']
+    expect(outputMock.mock.calls).toEqual([
+      ['status', '200'],
+      ['headers', expect.anything()],
+      ['response', '{"some":"JSON"}']
+    ])
   })
 
   it('should log the correct values for POST', async () => {
-    process.env['INPUT_VERBOSE'] = 'true'
     process.env['INPUT_METHOD'] = 'POST'
-    process.env['INPUT_HEADERS'] = '{"some": "input-headers"}'
     process.env['INPUT_DATA'] = '{"some": "data"}'
 
     const outputMock = jest.spyOn(core, 'setOutput')
-    const infoMock = (Logger.prototype.info = jest.fn())
+    const infoMock = jest.spyOn(Logger.prototype, 'info')
 
     await run()
 
-    expect(infoMock).toHaveBeenNthCalledWith(1, 'url', 'url')
-    expect(infoMock).toHaveBeenNthCalledWith(2, 'method', 'POST')
-    expect(infoMock).toHaveBeenNthCalledWith(
-      3,
-      'headers',
-      '{"some":"input-headers"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(4, 'data', '{"some": "data"}')
-    expect(infoMock).toHaveBeenNthCalledWith(5, 'response status', 200)
-    expect(infoMock).toHaveBeenNthCalledWith(
-      6,
-      'response headers',
-      '{"some":"response-headers"}'
-    )
-    expect(infoMock).toHaveBeenNthCalledWith(
-      7,
-      'response body',
-      '{"some":"JSON"}'
-    )
+    expect(infoMock.mock.calls).toEqual([
+      ['url', 'url'],
+      ['method', 'POST'],
+      ['headers', '{"some":"input-headers"}'],
+      ['data', '{"some": "data"}'],
+      ['response status', 200],
+      ['response headers', '{"some":"response-headers"}'],
+      ['response body', '{"some":"JSON"}']
+    ])
 
-    expect(outputMock).toHaveBeenNthCalledWith(1, 'status', '200')
-    expect(outputMock).toHaveBeenNthCalledWith(2, 'headers', expect.anything())
-    expect(outputMock).toHaveBeenNthCalledWith(3, 'response', '{"some":"JSON"}')
+    expect(outputMock.mock.calls).toEqual([
+      ['status', '200'],
+      ['headers', expect.anything()],
+      ['response', '{"some":"JSON"}']
+    ])
 
-    delete process.env['INPUT_VERBOSE']
     delete process.env['INPUT_METHOD']
-    delete process.env['INPUT_HEADERS']
     delete process.env['INPUT_DATA']
+  })
+
+  it('should log the correct values for GraphQL', async () => {
+    process.env['INPUT_GRAPHQL'] = '{ some { mutation } }'
+    process.env['INPUT_VARIABLES'] = '{"some": "variables"}'
+
+    const infoMock = jest.spyOn(Logger.prototype, 'info')
+    const outputMock = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    expect(infoMock.mock.calls).toEqual([
+      ['graphql', '{ some { mutation } }'],
+      ['variables', '{"some": "variables"}'],
+      ['url', 'url'],
+      ['method', 'POST'],
+      ['headers', '{"some":"input-headers"}'],
+      [
+        'data',
+        '{"query":"{ some { mutation } }","variables":{"some":"variables"}}'
+      ],
+      ['response status', 200],
+      ['response headers', '{"some":"response-headers"}'],
+      ['response body', '{"some":"JSON"}']
+    ])
+
+    expect(outputMock.mock.calls).toEqual([
+      ['status', '200'],
+      ['headers', expect.anything()],
+      ['response', '{"some":"JSON"}']
+    ])
+
+    delete process.env['INPUT_GRAPHQL']
+    delete process.env['INPUT_VARIABLES']
   })
 })
