@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
-import {run} from '../src/main'
 import * as http from '../src/http'
 import {Logger} from '../src/log'
 import {Method} from 'axios'
+import {run} from '../src/main'
 
 describe('when running the action with valid inputs', () => {
   jest.spyOn(http, 'request').mockImplementation(

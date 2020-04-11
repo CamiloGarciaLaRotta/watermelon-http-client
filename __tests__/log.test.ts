@@ -1,5 +1,5 @@
-import {Logger} from '../src/log'
 import * as core from '@actions/core'
+import {Logger} from '../src/log'
 
 describe('the logging wrapper', () => {
   it('should print info-level statements when verbose is true', () => {

@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
-import {run} from '../src/main'
 import {Logger} from '../src/log'
+import {run} from '../src/main'
 
 jest.setTimeout(600000)
 

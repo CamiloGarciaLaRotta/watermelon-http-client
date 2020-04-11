@@ -1,8 +1,8 @@
 import {getInput, setFailed, setOutput} from '@actions/core'
+import {graphqlPayloadFor} from './graphql'
 import {Logger} from './log'
 import {Method} from 'axios'
 import {request} from './http'
-import {graphqlPayloadFor} from './graphql'
 
 const isEmpty = (o: Object): boolean => Object.keys(o).length === 0
 const isDefined = (input: string): boolean => input !== '{}' && input.length > 0
