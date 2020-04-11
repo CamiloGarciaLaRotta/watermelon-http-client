@@ -1,21 +1,14 @@
 import axios from 'axios'
-import {when} from 'jest-when'
 import {request} from '../src/http'
 
-jest.mock('axios')
+describe('calling request', () => {
+  const fakeRequest = (axios.request = jest.fn().mockImplementation(x => {
+    Promise.resolve({status: 200, data: {}, headers: {}})
+  }))
 
-describe('when calling get', () => {
-  const fakeRequest = axios.request as jest.MockedFunction<typeof axios.request>
+  beforeEach(() => jest.resetModules())
 
-  beforeEach(() => {
-    jest.resetModules()
-
-    when(fakeRequest)
-      .calledWith(expect.anything())
-      .mockReturnValue(Promise.resolve({status: 200, data: {}, headers: {}}))
-  })
-
-  it('should call axios with the appropriate url and payload', async () => {
+  it('should call axios with the appropriate url and payload for GET', async () => {
     await request('url', 'get', '{"some": "JSON"}', {some: 'headers'})
 
     expect(fakeRequest).toHaveBeenCalledWith({
@@ -25,26 +18,14 @@ describe('when calling get', () => {
       headers: {some: 'headers'}
     })
   })
-})
 
-describe('when calling post', () => {
-  const fakeRequest = axios.request as jest.MockedFunction<typeof axios.request>
-
-  beforeEach(() => {
-    jest.resetModules()
-
-    when(fakeRequest)
-      .calledWith(expect.anything())
-      .mockReturnValue(Promise.resolve({status: 200, data: {some: 'JSON'}}))
-  })
-
-  it('should call axios with the appropriate url and payload', async () => {
-    await request('url', 'post', '{"a": "JSON"}', {})
+  it('should call axios with the appropriate url and payload for POST', async () => {
+    await request('url', 'post', '{"some": "JSON"}', {})
 
     expect(fakeRequest).toHaveBeenCalledWith({
       url: 'url',
       method: 'post',
-      data: '{"a": "JSON"}',
+      data: '{"some": "JSON"}',
       headers: {}
     })
   })

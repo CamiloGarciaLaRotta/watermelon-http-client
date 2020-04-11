@@ -1,24 +1,25 @@
 import * as core from '@actions/core'
 import {run} from '../src/main'
-import {request} from '../src/http'
-import {when} from 'jest-when'
+import * as http from '../src/http'
 import {Logger} from '../src/log'
-
-jest.mock('../src/http')
+import {Method} from 'axios'
 
 describe('when running the action with valid inputs', () => {
-  const fakeRequest = request as jest.MockedFunction<typeof request>
+  jest.spyOn(http, 'request').mockImplementation(
+    (
+      url: string,
+      method: Method,
+      data?: string | undefined,
+      headers?: Object | undefined
+    ): Promise<[number, Object, Object]> => {
+      return Promise.resolve([200, {some: 'response-headers'}, {some: 'JSON'}])
+    }
+  )
+  const infoMock = jest.spyOn(Logger.prototype, 'info')
+  const outputMock = jest.spyOn(core, 'setOutput')
 
   beforeEach(() => {
     jest.resetModules()
-
-    when(fakeRequest)
-      .calledWith('url', expect.anything(), expect.anything(), {
-        some: 'input-headers'
-      })
-      .mockReturnValue(
-        Promise.resolve([200, {some: 'response-headers'}, {some: 'JSON'}])
-      )
 
     process.env['INPUT_VERBOSE'] = 'true'
     process.env['INPUT_URL'] = 'url'
@@ -34,9 +35,6 @@ describe('when running the action with valid inputs', () => {
   })
 
   it('should log the correct values for GET', async () => {
-    const infoMock = jest.spyOn(Logger.prototype, 'info')
-    const outputMock = jest.spyOn(core, 'setOutput')
-
     await run()
 
     expect(infoMock.mock.calls).toEqual([
@@ -58,9 +56,6 @@ describe('when running the action with valid inputs', () => {
   it('should log the correct values for POST', async () => {
     process.env['INPUT_METHOD'] = 'POST'
     process.env['INPUT_DATA'] = '{"some": "data"}'
-
-    const outputMock = jest.spyOn(core, 'setOutput')
-    const infoMock = jest.spyOn(Logger.prototype, 'info')
 
     await run()
 
@@ -87,9 +82,6 @@ describe('when running the action with valid inputs', () => {
   it('should log the correct values for GraphQL', async () => {
     process.env['INPUT_GRAPHQL'] = '{ some { mutation } }'
     process.env['INPUT_VARIABLES'] = '{"some": "variables"}'
-
-    const infoMock = jest.spyOn(Logger.prototype, 'info')
-    const outputMock = jest.spyOn(core, 'setOutput')
 
     await run()
 
