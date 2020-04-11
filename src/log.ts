@@ -6,7 +6,7 @@ import {info, error} from '@actions/core'
  * It will only log to 'info' if verbose is set to true.
  */
 export class Logger {
-  verbose: Boolean
+  verbose: boolean
   constructor(verbose = false) {
     this.verbose = verbose
   }

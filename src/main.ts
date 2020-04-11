@@ -4,6 +4,9 @@ import {Method} from 'axios'
 import {request} from './http'
 import {graphqlPayloadFor} from './graphql'
 
+const isEmpty = (o: Object): boolean => Object.keys(o).length === 0
+const isDefined = (input: string): boolean => input !== '{}' && input.length > 0
+
 export async function run(): Promise<void> {
   try {
     const verbose: boolean = getInput('verbose') === 'true'
@@ -75,11 +78,6 @@ export async function run(): Promise<void> {
   } catch (error) {
     setFailed(error.message)
   }
-}
-
-const isEmpty = (o: Object): Boolean => Object.keys(o).length === 0
-const isDefined = (input: string): Boolean => {
-  return input !== '{}' && input.length > 0
 }
 
 run()

@@ -847,6 +847,8 @@ const core_1 = __webpack_require__(470);
 const log_1 = __webpack_require__(732);
 const http_1 = __webpack_require__(617);
 const graphql_1 = __webpack_require__(500);
+const isEmpty = (o) => Object.keys(o).length === 0;
+const isDefined = (input) => input !== '{}' && input.length > 0;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -906,10 +908,6 @@ function run() {
     });
 }
 exports.run = run;
-const isEmpty = (o) => Object.keys(o).length === 0;
-const isDefined = (input) => {
-    return input !== '{}' && input.length > 0;
-};
 run();
 
 
@@ -2193,6 +2191,13 @@ module.exports = function isCancel(value) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
+ * Replace multiple spaces and newlines from a string.
+ *
+ * @param {string} s - The string to be minified.
+ * @returns {string} The single line, single spaced string.
+ */
+const minify = (s) => s.replace(/\s+/g, ' ').trim();
+/**
  * Returns the stringified JSON payload which corresponds to the GraphQL operation.
  * If no operation is explicitly defined, it will default to `query`.
  *
@@ -2206,13 +2211,6 @@ function graphqlPayloadFor(rawQuery, rawVariables) {
     return JSON.stringify({ query, variables: JSON.parse(variables) });
 }
 exports.graphqlPayloadFor = graphqlPayloadFor;
-/**
- * Replace multiple spaces and newlines from a string.
- *
- * @param {string} s - The string to be minified.
- * @returns {string} The single line, single spaced string.
- */
-const minify = (s) => s.replace(/\s+/g, ' ').trim();
 
 
 /***/ }),
