@@ -28,4 +28,18 @@ describe('calling graphqlPayloadFor', () => {
       '{"query":"foo { data }","variables":{}}'
     )
   })
+
+  it('should set operationName if passed', () => {
+    const queries = `query A {
+      foo {
+        bar
+      }
+    }
+    query B {
+      baz
+    }`
+    expect(graphqlPayloadFor(queries, '{}', 'A')).toMatch(
+      '{"query":"query A { foo { bar } } query B { baz }","variables":{},"operationName":"A"}'
+    )
+  })
 })
