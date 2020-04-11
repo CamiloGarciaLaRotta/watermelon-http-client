@@ -12,13 +12,21 @@ const minify = (s: string): string => s.replace(/\s+/g, ' ').trim()
  *
  * @param {string} rawQuery - The stringified GraphQL query or mutation.
  * @param {string} rawVariables - The JSON mutation variables.
+ * @param {string} operationName - The entrypoint GraphQL operation if multiple are defined in `rawQuery`.
  * @returns {string} `{"query": <GraphQL query>, "variables": <variables>}`.
  */
 export function graphqlPayloadFor(
   rawQuery: string,
-  rawVariables: string
+  rawVariables: string,
+  operationName = ''
 ): string {
   const query = minify(rawQuery)
-  const variables = minify(rawVariables)
-  return JSON.stringify({query, variables: JSON.parse(variables)})
+  const minifiedVariables = minify(rawVariables)
+  const variables = JSON.parse(minifiedVariables)
+
+  if (operationName === '') {
+    return JSON.stringify({query, variables})
+  }
+
+  return JSON.stringify({query, variables, operationName})
 }
