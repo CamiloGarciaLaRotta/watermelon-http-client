@@ -17,6 +17,9 @@ inputs:
   variables:
     description: variables for a GraphQL mutation in JSON format
     default: '{}'
+  verbose:
+    description: wether to print info-level statements or not
+    default: false
 outputs:
   status:
     description: The status of the HTTP request
