@@ -842,71 +842,74 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
+const core_1 = __webpack_require__(470);
+const log_1 = __webpack_require__(732);
 const http_1 = __webpack_require__(617);
 const graphql_1 = __webpack_require__(500);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const url = core.getInput('url');
-            let method = core.getInput('method');
-            const rawInputHeaders = core.getInput('headers');
-            let data = core.getInput('data');
-            const graphql = core.getInput('graphql');
-            const variables = core.getInput('variables');
+            const verbose = core_1.getInput('verbose') === 'true';
+            const log = new log_1.Logger(verbose);
+            const url = core_1.getInput('url');
+            let method = core_1.getInput('method');
+            const rawInputHeaders = core_1.getInput('headers');
+            let data = core_1.getInput('data');
+            const graphql = core_1.getInput('graphql');
+            const variables = core_1.getInput('variables');
+            const operationName = core_1.getInput('operation_name');
             let inputHeaders;
-            if (rawInputHeaders.length > 0) {
+            if (isDefined(rawInputHeaders)) {
                 inputHeaders = JSON.parse(rawInputHeaders);
             }
             else {
                 inputHeaders = {};
             }
-            if (graphql.length !== 0) {
+            if (isDefined(graphql)) {
                 method = 'POST';
                 data = graphql_1.graphqlPayloadFor(graphql, variables);
                 if (isEmpty(inputHeaders)) {
                     inputHeaders = { 'Content-Type': 'application/json' };
                 }
-                core.info(`graphql: ${graphql}`);
-                core.info(`variables: ${variables}`);
+                log.info('graphql', graphql);
+                log.info('variables', variables);
+                if (isDefined(operationName)) {
+                    log.info('operation_name', operationName);
+                }
             }
-            core.info(`url: ${url}`);
-            core.info(`method: ${method}`);
-            core.info(`headers: ${JSON.stringify(inputHeaders)}`);
-            if (data.length !== 0) {
-                core.info(`data: ${data}`);
+            log.info('url', url);
+            log.info('method', method);
+            log.info('headers', JSON.stringify(inputHeaders));
+            if (isDefined(data)) {
+                log.info('data', data);
             }
             const [status, rawResponseHeaders, rawResponse] = yield http_1.request(url, method, data, inputHeaders);
             const responseHeaders = JSON.stringify(rawResponseHeaders);
             const response = JSON.stringify(rawResponse);
             if (status < 200 || status >= 300) {
-                core.error(`response status: ${status}`);
-                core.error(`response headers: ${responseHeaders}`);
-                core.error(`response body: ${response}`);
+                log.error('response status', status);
+                log.error('response headers', responseHeaders);
+                log.error('response body', response);
                 throw new Error(`request failed: ${response}`);
             }
-            core.info(`response status: ${status}`);
-            core.info(`response headers: ${responseHeaders}`);
-            core.info(`response body: ${response}`);
-            core.setOutput('status', `${status}`);
-            core.setOutput('headers', `${responseHeaders}`);
-            core.setOutput('response', `${response}`);
+            log.info('response status', status);
+            log.info('response headers', responseHeaders);
+            log.info('response body', response);
+            core_1.setOutput('status', `${status}`);
+            core_1.setOutput('headers', `${responseHeaders}`);
+            core_1.setOutput('response', `${response}`);
         }
         catch (error) {
-            core.setFailed(error.message);
+            core_1.setFailed(error.message);
         }
     });
 }
 exports.run = run;
 const isEmpty = (o) => Object.keys(o).length === 0;
+const isDefined = (input) => {
+    return input !== '{}' && input.length > 0;
+};
 run();
 
 
@@ -1746,7 +1749,7 @@ axios.create = function create(instanceConfig) {
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(826);
 axios.CancelToken = __webpack_require__(137);
-axios.isCancel = __webpack_require__(732);
+axios.isCancel = __webpack_require__(492);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -2167,6 +2170,19 @@ function getState(name) {
 }
 exports.getState = getState;
 //# sourceMappingURL=core.js.map
+
+/***/ }),
+
+/***/ 492:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
 
 /***/ }),
 
@@ -3406,14 +3422,31 @@ module.exports = function bind(fn, thisArg) {
 /***/ }),
 
 /***/ 732:
-/***/ (function(module) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
 
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = __webpack_require__(470);
+/**
+ * Thin wrapper around the stdlib logger.
+ * It limits the available logging levels to 'info' and 'error'.
+ * It will only log to 'info' if verbose is set to true.
+ */
+class Logger {
+    constructor(verbose = false) {
+        this.verbose = verbose;
+    }
+    info(key, value) {
+        if (!this.verbose)
+            return;
+        core_1.info(`${key}: ${value}`);
+    }
+    error(key, value) {
+        core_1.error(`${key}: ${value}`);
+    }
+}
+exports.Logger = Logger;
 
 
 /***/ }),
@@ -3775,7 +3808,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 var utils = __webpack_require__(35);
 var transformData = __webpack_require__(589);
-var isCancel = __webpack_require__(732);
+var isCancel = __webpack_require__(492);
 var defaults = __webpack_require__(529);
 
 /**
