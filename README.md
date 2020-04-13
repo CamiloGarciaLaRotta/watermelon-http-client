@@ -14,6 +14,7 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 | data | JSON encoded HTTP request payload |  |
 | graphql | GraphQL query/mutation to execute | Empty by default. If defined, the `data` field is automatically populated with this payload and the `method` is set to `POST` |
 | variables | JSON encoded variables for the GraphQL mutation | |
+| operation_name | name of the entrypoint GraphQL operation if multiple are defined in `graphql` | |
 | verbose | wether to print info-level statements or not | false |
 
 ## Outputs

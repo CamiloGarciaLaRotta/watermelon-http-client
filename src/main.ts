@@ -30,7 +30,7 @@ export async function run(): Promise<void> {
 
     if (isDefined(graphql)) {
       method = 'POST'
-      data = graphqlPayloadFor(graphql, variables)
+      data = graphqlPayloadFor(graphql, variables, operationName)
 
       if (isEmpty(inputHeaders)) {
         inputHeaders = {'Content-Type': 'application/json'}

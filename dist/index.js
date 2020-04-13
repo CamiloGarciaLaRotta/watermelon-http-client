@@ -847,12 +847,17 @@ const minify = (s) => s.replace(/\s+/g, ' ').trim();
  *
  * @param {string} rawQuery - The stringified GraphQL query or mutation.
  * @param {string} rawVariables - The JSON mutation variables.
+ * @param {string} operationName - The entrypoint GraphQL operation if multiple are defined in `rawQuery`.
  * @returns {string} `{"query": <GraphQL query>, "variables": <variables>}`.
  */
-function graphqlPayloadFor(rawQuery, rawVariables) {
+function graphqlPayloadFor(rawQuery, rawVariables, operationName = '') {
     const query = minify(rawQuery);
-    const variables = minify(rawVariables);
-    return JSON.stringify({ query, variables: JSON.parse(variables) });
+    const minifiedVariables = minify(rawVariables);
+    const variables = JSON.parse(minifiedVariables);
+    if (operationName === '') {
+        return JSON.stringify({ query, variables });
+    }
+    return JSON.stringify({ query, variables, operationName });
 }
 exports.graphqlPayloadFor = graphqlPayloadFor;
 
@@ -901,7 +906,7 @@ function run() {
             }
             if (isDefined(graphql)) {
                 method = 'POST';
-                data = graphql_1.graphqlPayloadFor(graphql, variables);
+                data = graphql_1.graphqlPayloadFor(graphql, variables, operationName);
                 if (isEmpty(inputHeaders)) {
                     inputHeaders = { 'Content-Type': 'application/json' };
                 }
