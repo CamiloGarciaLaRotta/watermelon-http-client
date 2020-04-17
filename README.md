@@ -8,7 +8,7 @@ A Typescript Action that performs HTTP requests within your workflow. It support
 
 | Argument | Description | Default |
 | --- | --- | --- |
-| url | Endpoint to query | https://api.github.com/graphql |
+| url | Endpoint to query | https://api.github.com. If `graphql` is set, then https://api.github.com/graphql |
 | method | HTTP method | `GET` |
 | headers | JSON encoded HTTP headers | Empty by default. If no headers are supplied, GraphQL queries will be sent with `{'Content-Type': 'application/json'}` |
 | data | JSON encoded HTTP request payload |  |

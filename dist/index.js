@@ -885,12 +885,13 @@ const log_1 = __webpack_require__(732);
 const http_1 = __webpack_require__(617);
 const isEmpty = (o) => Object.keys(o).length === 0;
 const isDefined = (input) => input !== '{}' && input.length > 0;
+const isCustomURL = (url) => url !== 'https://api.github.com';
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const verbose = core_1.getInput('verbose') === 'true';
             const log = new log_1.Logger(verbose);
-            const url = core_1.getInput('url');
+            let url = core_1.getInput('url');
             let method = core_1.getInput('method');
             const rawInputHeaders = core_1.getInput('headers');
             let data = core_1.getInput('data');
@@ -905,6 +906,9 @@ function run() {
                 inputHeaders = {};
             }
             if (isDefined(graphql)) {
+                if (!isCustomURL(url)) {
+                    url = 'https://api.github.com/graphql';
+                }
                 method = 'POST';
                 data = graphql_1.graphqlPayloadFor(graphql, variables, operationName);
                 if (isEmpty(inputHeaders)) {
