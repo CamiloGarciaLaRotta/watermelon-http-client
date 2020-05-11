@@ -41,7 +41,7 @@
     "flow-bin": "^0.122.0",
     "graphql": "^14.0.0",
     "jest": "^25.2.7",
-    "jest-circus": "^25.3.0",
+    "jest-circus": "^26.0.1",
     "kind-of": ">=6.0.3",
     "minimist": ">=1.2.2",
     "prettier": "^2.0.3",
