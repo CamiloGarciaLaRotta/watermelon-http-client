@@ -39,7 +39,7 @@
     "eslint-plugin-github": "^3.4.1",
     "eslint-plugin-jest": "^23.8.2",
     "flow-bin": "^0.130.0",
-    "graphql": "^14.0.0",
+    "graphql": "^15.3.0",
     "jest": "^25.5.4",
     "jest-circus": "^26.2.2",
     "kind-of": ">=6.0.3",
