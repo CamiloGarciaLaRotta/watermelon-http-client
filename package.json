@@ -45,7 +45,7 @@
     "kind-of": ">=6.0.3",
     "minimist": ">=1.2.2",
     "node-fetch": ">=2.6.1",
-    "prettier": "^2.0.3",
+    "prettier": "^2.1.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.7"
   }
