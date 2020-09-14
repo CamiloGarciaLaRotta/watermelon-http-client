@@ -1,8 +1,9 @@
 {
     "plugins": ["jest", "@typescript-eslint"],
     "extends": [
-      "plugin:github/es6",
+      "plugin:github/typescript",
       "eslint:recommended",
+      "plugin:eslint-comments/recommended",
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended",
       "plugin:@typescript-eslint/recommended-requiring-type-checking"
