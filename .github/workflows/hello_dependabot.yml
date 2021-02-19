@@ -9,18 +9,12 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const creator = context.payload.sender.login;
-            console.log(creator);
-            console.log(context.issue.number);
-            console.log(context.repo.owner);
-            console.log(context.repo.repo);
-
             if (creator !== "dependabot-preview[bot]") {
               return;
             }
             
             const msg = `🚨 @FOOBAR: please review the [playbook] for information on how to review dependency update PRs.
             ❤️  thank you very much`;
-            console.log(msg);
 
             await github.issues.createComment({
               issue_number: context.issue.number,
