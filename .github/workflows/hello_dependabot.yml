@@ -14,7 +14,7 @@ jobs:
             console.log(context.repo.owner);
             console.log(context.repo.repo);
 
-            if (creator !== "dependabot-preview") {
+            if (creator !== "dependabot-preview[bot]") {
               return;
             }
             
