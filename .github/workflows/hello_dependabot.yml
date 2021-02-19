@@ -1,0 +1,24 @@
+on: pull_request
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const creator = context.payload.sender.login
+            if (creator !== "dependabot-preview") {
+              return;
+            }
+            
+            const msg = `🚨 @FOOBAR: please review the [playbook] for information on how to review dependency update PRs.
+            ❤️  thank you very much`;
+
+            await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Welcome, new contributor!'
+            })
