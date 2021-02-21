@@ -41,6 +41,7 @@ describe('when running the action with valid inputs', () => {
       ['url', 'url'],
       ['method', 'GET'],
       ['headers', '{"some":"input-headers"}'],
+      ['fail_fast', 'false'],
       ['response status', 200],
       ['response headers', '{"some":"response-headers"}'],
       ['response body', '{"some":"JSON"}']
@@ -64,6 +65,7 @@ describe('when running the action with valid inputs', () => {
       ['method', 'POST'],
       ['headers', '{"some":"input-headers"}'],
       ['data', '{"some": "data"}'],
+      ['fail_fast', 'false'],
       ['response status', 200],
       ['response headers', '{"some":"response-headers"}'],
       ['response body', '{"some":"JSON"}']
@@ -95,6 +97,7 @@ describe('when running the action with valid inputs', () => {
         'data',
         '{"query":"{ some { mutation } }","variables":{"some":"variables"}}'
       ],
+      ['fail_fast', 'false'],
       ['response status', 200],
       ['response headers', '{"some":"response-headers"}'],
       ['response body', '{"some":"JSON"}']

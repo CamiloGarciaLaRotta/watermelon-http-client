@@ -58,7 +58,11 @@ describe('when called with a POST request', () => {
       ['response body', expect.anything()]
     ])
 
-    expect(outputMock).not.toHaveBeenCalled()
+    expect(outputMock.mock.calls).toEqual([
+      ['status', expect.anything()],
+      ['headers', expect.anything()],
+      ['response', expect.anything()]
+    ])
   })
 })
 
@@ -99,7 +103,87 @@ describe('when called with a GraphQL query', () => {
   })
 })
 
-describe('when action fails', () => {
+describe('when action fails without fail_fast', () => {
+  it('should handle missing input gracefully', async () => {
+    const outputMock = jest.spyOn(core, 'setOutput')
+    const failureMock = jest.spyOn(core, 'setFailed')
+
+    await run()
+
+    expect(outputMock).toHaveBeenCalled()
+    expect(failureMock).not.toHaveBeenCalled()
+  })
+
+  it('should handle invalid input errors gracefully ', async () => {
+    process.env['INPUT_URL'] = 'https://jsonplaceholder.typicode.com/todos?id=1'
+    process.env['INPUT_METHOD'] = 'invalid-http-method'
+
+    const errorMock = jest.spyOn(Logger.prototype, 'error')
+    const outputMock = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    // once for each of the following: status, headers, response
+    expect(errorMock).toHaveBeenCalledTimes(3)
+    expect(outputMock).toHaveBeenCalled()
+
+    delete process.env['INPUT_URL']
+    delete process.env['INPUT_METHOD']
+  })
+
+  it('should handle server-side errors gracefully ', async () => {
+    // request will 404 because server does not respond to POST
+    process.env['INPUT_URL'] = 'https://camilogarcialarotta.io/'
+    process.env['INPUT_METHOD'] = 'post'
+
+    const errorMock = jest.spyOn(Logger.prototype, 'error')
+    const outputMock = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    // once for each of the following: status, headers, response
+    expect(errorMock).toHaveBeenCalledTimes(3)
+    expect(outputMock).toHaveBeenCalled()
+
+    delete process.env['INPUT_URL']
+    delete process.env['INPUT_METHOD']
+  })
+
+  it('should handle action-side errors gracefully ', async () => {
+    process.env['INPUT_URL'] = 'ftp://>invalid|url<'
+
+    const fakeLogError = jest.spyOn(core, 'error')
+    const outputMock = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    // once for each of the following: status, headers, response
+    expect(fakeLogError).toHaveBeenCalledTimes(3)
+    expect(outputMock).toHaveBeenCalled()
+  })
+
+  it('should reply with a 401 Unauthorized', async () => {
+    process.env['INPUT_URL'] = 'https://api.github.com/graphql'
+    process.env['INPUT_METHOD'] = 'post'
+
+    const errorMock = jest.spyOn(Logger.prototype, 'error')
+    const outputMock = jest.spyOn(core, 'setOutput')
+
+    await run()
+
+    expect(outputMock).toHaveBeenCalled()
+    expect(errorMock).toHaveBeenNthCalledWith(1, 'response status', 401)
+
+    delete process.env['INPUT_URL']
+    delete process.env['INPUT_HEADERS']
+  })
+})
+
+describe('when action fails with fail_fast', () => {
+  beforeEach(() => {
+    process.env['INPUT_FAIL_FAST'] = 'true'
+  })
+
   it('should handle missing input gracefully', async () => {
     const outputMock = jest.spyOn(core, 'setOutput')
     const failureMock = jest.spyOn(core, 'setFailed')

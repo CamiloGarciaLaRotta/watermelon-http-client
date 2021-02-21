@@ -1002,6 +1002,7 @@ function run() {
             const graphql = core_1.getInput('graphql');
             const variables = core_1.getInput('variables');
             const operationName = core_1.getInput('operation_name');
+            const failFast = core_1.getInput('fail_fast') === 'true';
             let inputHeaders;
             if (isDefined(rawInputHeaders)) {
                 inputHeaders = JSON.parse(rawInputHeaders);
@@ -1030,6 +1031,7 @@ function run() {
             if (isDefined(data)) {
                 log.info('data', data);
             }
+            log.info('fail_fast', String(failFast));
             const [status, rawResponseHeaders, rawResponse] = yield http_1.request(url, method, data, inputHeaders);
             const responseHeaders = JSON.stringify(rawResponseHeaders);
             const response = JSON.stringify(rawResponse);
@@ -1037,11 +1039,15 @@ function run() {
                 log.error('response status', status);
                 log.error('response headers', responseHeaders);
                 log.error('response body', response);
-                throw new Error(`request failed: ${response}`);
+                if (failFast) {
+                    throw new Error(`request failed: ${response}`);
+                }
             }
-            log.info('response status', status);
-            log.info('response headers', responseHeaders);
-            log.info('response body', response);
+            else {
+                log.info('response status', status);
+                log.info('response headers', responseHeaders);
+                log.info('response body', response);
+            }
             core_1.setOutput('status', `${status}`);
             core_1.setOutput('headers', `${responseHeaders}`);
             core_1.setOutput('response', `${response}`);

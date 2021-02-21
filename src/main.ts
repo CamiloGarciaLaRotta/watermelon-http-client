@@ -21,6 +21,7 @@ export async function run(): Promise<void> {
     const graphql: string = getInput('graphql')
     const variables: string = getInput('variables')
     const operationName: string = getInput('operation_name')
+    const failFast: boolean = getInput('fail_fast') === 'true'
 
     let inputHeaders: Object
     if (isDefined(rawInputHeaders)) {
@@ -55,6 +56,7 @@ export async function run(): Promise<void> {
     if (isDefined(data)) {
       log.info('data', data)
     }
+    log.info('fail_fast', String(failFast))
 
     const [status, rawResponseHeaders, rawResponse] = await request(
       url,
@@ -71,12 +73,14 @@ export async function run(): Promise<void> {
       log.error('response headers', responseHeaders)
       log.error('response body', response)
 
-      throw new Error(`request failed: ${response}`)
+      if (failFast) {
+        throw new Error(`request failed: ${response}`)
+      }
+    } else {
+      log.info('response status', status)
+      log.info('response headers', responseHeaders)
+      log.info('response body', response)
     }
-
-    log.info('response status', status)
-    log.info('response headers', responseHeaders)
-    log.info('response body', response)
 
     setOutput('status', `${status}`)
     setOutput('headers', `${responseHeaders}`)
