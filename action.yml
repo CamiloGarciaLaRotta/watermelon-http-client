@@ -19,6 +19,9 @@ inputs:
     default: '{}'
   operation_name:
     description: name of the entrypoint GraphQL operation if multiple are defined in `graphql`
+  fail_fast:
+    description: wether to fail upon error HTML responses (e.g. 400, 500)
+    default: false
   verbose:
     description: wether to print info-level statements or not
     default: false
