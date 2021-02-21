@@ -158,9 +158,8 @@ describe('when action fails', () => {
   })
 
   it('should reply with a 401 Unauthorized', async () => {
-    process.env['INPUT_URL'] = 'https://api.github.com'
-    process.env['INPUT_HEADERS'] =
-      '{"content-type":"application/json", "Authorization": "Basic DummyToken123"}'
+    process.env['INPUT_URL'] = 'https://api.github.com/graphql'
+    process.env['INPUT_METHOD'] = 'post'
 
     const errorMock = jest.spyOn(Logger.prototype, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')
