@@ -33,7 +33,9 @@ export async function run(): Promise<void> {
       if (!isCustomURL(url)) {
         url = 'https://api.github.com/graphql'
       }
+
       method = 'POST'
+
       data = graphqlPayloadFor(graphql, variables, operationName)
 
       if (isEmpty(inputHeaders)) {

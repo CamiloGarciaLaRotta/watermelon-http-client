@@ -46,18 +46,19 @@ describe('when called with a POST request', () => {
   })
 
   it('should output a valid result', async () => {
+    process.env['INPUT_URL'] = 'https://api.github.com'
     const outputMock = jest.spyOn(core, 'setOutput')
     const errorMock = jest.spyOn(Logger.prototype, 'error')
 
     await run()
 
-    expect(outputMock.mock.calls).toEqual([
-      ['status', expect.anything()],
-      ['headers', expect.anything()],
-      ['response', expect.anything()]
+    expect(errorMock.mock.calls).toEqual([
+      ['response status', expect.anything()],
+      ['response headers', expect.anything()],
+      ['response body', expect.anything()]
     ])
 
-    expect(errorMock).not.toHaveBeenCalled()
+    expect(outputMock).not.toHaveBeenCalled()
   })
 })
 
