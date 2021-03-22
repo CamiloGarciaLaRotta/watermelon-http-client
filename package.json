@@ -27,7 +27,7 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "axios": "^0.21.1",
-    "node-notifier": ">=8.0.1"
+    "node-notifier": ">=9.0.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
