@@ -1,0 +1,90 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "10:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - CamiloGarciaLaRotta
+  - titoine54
+  labels:
+  - dependencies
+  ignore:
+  - dependency-name: acorn
+    versions:
+    - "> 8.0.1"
+    - "< 8.1"
+  - dependency-name: eslint-plugin-jest
+    versions:
+    - ">= 24.1.a"
+    - "< 24.2"
+  - dependency-name: flow-bin
+    versions:
+    - ">= 0.131.a"
+    - "< 0.132"
+  - dependency-name: flow-bin
+    versions:
+    - ">= 0.135.a"
+    - "< 0.136"
+  - dependency-name: flow-bin
+    versions:
+    - ">= 0.136.a"
+    - "< 0.137"
+  - dependency-name: flow-bin
+    versions:
+    - ">= 0.137.a"
+    - "< 0.138"
+  - dependency-name: flow-bin
+    versions:
+    - ">= 0.145.a"
+    - "< 0.146"
+  - dependency-name: jest-circus
+    versions:
+    - ">= 26.5.a"
+    - "< 26.6"
+  - dependency-name: jest-circus
+    versions:
+    - "> 26.6.1"
+    - "< 26.7"
+  - dependency-name: prettier
+    versions:
+    - "> 2.0.3"
+    - "< 2.1"
+  - dependency-name: "@types/jest"
+    versions:
+    - "> 26.0.14"
+    - "< 26.1"
+  - dependency-name: "@types/node"
+    versions:
+    - "> 14.0.26"
+    - "< 14.1"
+  - dependency-name: "@types/node"
+    versions:
+    - "> 14.11.1"
+    - "< 14.12"
+  - dependency-name: "@types/node"
+    versions:
+    - ">= 14.14.a"
+    - "< 14.15"
+  - dependency-name: "@zeit/ncc"
+    versions:
+    - "> 0.22.0"
+    - "< 0.23"
+  commit-message:
+    prefix: fix
+    prefix-development: chore
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "10:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - CamiloGarciaLaRotta
+  - titoine54
+  labels:
+  - dependencies
+  commit-message:
+    prefix: fix
