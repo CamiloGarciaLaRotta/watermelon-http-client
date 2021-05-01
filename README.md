@@ -67,7 +67,7 @@ url: 'https://countries.trevorblades.com/'
 ```yaml
 uses: CamiloGarciaLaRotta/watermelon-http-client@v1
 with:
-  headers: '{"Authorization": "bearer ${{ secrets.TOKEN }}" }'
+  headers: '{"Authorization": "bearer ${{ secrets.TOKEN }}", "Content-Type": "application/json" }'
   graphql: |
     mutation addRocketEmoji($reaction:AddReactionInput!) {
       addReaction(input:$reaction) {
