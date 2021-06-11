@@ -3,9 +3,7 @@
 # https://github.com/github/ossar-action
 name: OSSAR
 
-on:
-  push:
-  pull_request:
+on: push
 
 jobs:
   OSSAR-Scan:
