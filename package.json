@@ -46,7 +46,7 @@
     "jest-circus": "^26.6.1",
     "kind-of": ">=6.0.3",
     "minimist": ">=1.2.2",
-    "node-fetch": ">=3.1.1",
+    "node-fetch": ">=3.2.9",
     "prettier": "^2.2.1",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.10"
