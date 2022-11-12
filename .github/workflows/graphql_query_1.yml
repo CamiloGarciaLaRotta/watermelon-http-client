@@ -10,7 +10,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: Get the sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Execute a dummy query
         id: query
         uses: ./
