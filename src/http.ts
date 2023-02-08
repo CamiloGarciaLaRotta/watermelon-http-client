@@ -11,38 +11,39 @@ import axios, {Method} from 'axios'
  */
 export async function request(
   url: string,
-  method: Method,
+  method: Method = 'GET',
   data = '{}',
-  headers: Object = {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  headers: any = {}
 ): Promise<[number, Object, Object]> {
   try {
     const response = await axios.request({
       url,
       method,
       data,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       headers
     })
 
     const status = response.status
     const responseHeaders = response.headers
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const payload = response.data
 
     return [status, responseHeaders, payload]
   } catch (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      const status = error.response.status
-      const responseHeaders = error.response.headers
-      const payload = error.response.data as Object
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        const status = error.response.status
+        const responseHeaders = error.response.headers
+        const payload = error.response.data as Object
 
-      return [status, responseHeaders, payload]
+        return [status, responseHeaders, payload]
+      }
     }
 
     // Something happened in setting up the request that triggered an error
-    return [
-      500,
-      '',
-      `request could not be generated: ${JSON.stringify(error.message)}`
-    ]
+    return [500, '', `request could not be generated: ${JSON.stringify(error)}`]
   }
 }

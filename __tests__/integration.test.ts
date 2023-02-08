@@ -150,7 +150,7 @@ describe('when action fails without fail_fast', () => {
   })
 
   it('should handle action-side errors gracefully ', async () => {
-    process.env['INPUT_URL'] = 'ftp://>invalid|url<'
+    process.env['INPUT_URL'] = 'abc'
 
     const fakeLogError = jest.spyOn(core, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')
@@ -230,7 +230,7 @@ describe('when action fails with fail_fast', () => {
   })
 
   it('should handle action-side errors gracefully ', async () => {
-    process.env['INPUT_URL'] = 'ftp://>invalid|url<'
+    process.env['INPUT_URL'] = 'abc'
 
     const fakeLogError = jest.spyOn(core, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')

@@ -5,16 +5,22 @@ import {Method} from 'axios'
 import {run} from '../src/main'
 
 describe('when running the action with valid inputs', () => {
-  jest.spyOn(http, 'request').mockImplementation(
-    (
-      url: string,
-      method: Method,
-      data?: string | undefined,
-      headers?: Object | undefined
-    ): Promise<[number, Object, Object]> => {
-      return Promise.resolve([200, {some: 'response-headers'}, {some: 'JSON'}])
-    }
-  )
+  jest
+    .spyOn(http, 'request')
+    .mockImplementation(
+      (
+        url: string,
+        method: Method | undefined,
+        data?: string | undefined,
+        headers?: Object | undefined
+      ): Promise<[number, Object, Object]> => {
+        return Promise.resolve([
+          200,
+          {some: 'response-headers'},
+          {some: 'JSON'}
+        ])
+      }
+    )
   const infoMock = jest.spyOn(Logger.prototype, 'info')
   const outputMock = jest.spyOn(core, 'setOutput')
 
