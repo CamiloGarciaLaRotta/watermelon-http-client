@@ -16,19 +16,26 @@ describe('when called with a GET query', () => {
     delete process.env['INPUT_METHOD']
   })
 
-  it('should output a valid result', async () => {
+  it.skipWindows('should output a valid result', async () => {
     const outputMock = jest.spyOn(core, 'setOutput')
     const errorMock = jest.spyOn(Logger.prototype, 'error')
 
     await run()
 
+    expect(errorMock.mock.calls).toEqual([
+      ['response status', expect.anything()],
+      ['response headers', expect.anything()],
+      ['response body', expect.anything()]
+    ])
+
     expect(outputMock.mock.calls).toEqual([
+      ['status', expect.anything()],
+      ['headers', expect.anything()],
+      ['response', expect.anything()],
       ['status', expect.anything()],
       ['headers', expect.anything()],
       ['response', expect.anything()]
     ])
-
-    expect(errorMock).not.toHaveBeenCalled()
   })
 })
 

@@ -5,13 +5,12 @@
   "description": "GitHub Action that allows to specify a server endpoint & GraphQL query to execute.",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && ncc build",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "single-file": "ncc build",
     "test": "jest --clearCache && jest",
-    "all": "yarn build && yarn format && yarn format-check && yarn lint && yarn single-file && yarn test"
+    "all": "yarn build && yarn format && yarn format-check && yarn lint && yarn test"
   },
   "repository": {
     "type": "git",

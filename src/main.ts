@@ -99,3 +99,11 @@ export async function run(): Promise<void> {
     }
   }
 }
+
+run().catch(error => {
+  if (error instanceof Error) {
+    setFailed(error.message)
+  } else {
+    setFailed(`Unexpected error: ${JSON.stringify(error)}`)
+  }
+})

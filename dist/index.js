@@ -1475,6 +1475,14 @@ function run() {
     });
 }
 exports.run = run;
+run().catch(error => {
+    if (error instanceof Error) {
+        (0, core_1.setFailed)(error.message);
+    }
+    else {
+        (0, core_1.setFailed)(`Unexpected error: ${JSON.stringify(error)}`);
+    }
+});
 
 
 /***/ }),
