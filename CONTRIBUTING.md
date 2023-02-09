@@ -2,7 +2,7 @@
 
 # Links
 - [Project Board](https://github.com/CamiloGarciaLaRotta/watermelon-http-client/projects/1): If you're looking for Good-first-issues, PR reviews, etc.
-- [`.github/workflows`](https://github.com/CamiloGarciaLaRotta/watermelon-http-client/tree/master/.github/workflows): if you are looking for examples of how to use the Action
+- [`.github/workflows`](https://github.com/CamiloGarciaLaRotta/watermelon-http-client/tree/mains/.github/workflows): if you are looking for examples of how to use the Action
 
 # Setting up your local environment
 Just clone the repo and install the dependencies

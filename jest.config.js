@@ -3,5 +3,6 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
-  verbose: true
+  verbose: true,
+  setupFilesAfterEnv: ["jest-os-detection"]
 }

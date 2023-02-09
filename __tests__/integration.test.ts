@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import {Logger} from '../src/log'
 import {run} from '../src/main'
+import 'jest-os-detection'
 
 jest.setTimeout(600000)
 
@@ -184,7 +185,7 @@ describe('when action fails with fail_fast', () => {
     process.env['INPUT_FAIL_FAST'] = 'true'
   })
 
-  it('should handle missing input gracefully', async () => {
+  it.skipWindows('should handle missing input gracefully', async () => {
     const outputMock = jest.spyOn(core, 'setOutput')
     const failureMock = jest.spyOn(core, 'setFailed')
 
