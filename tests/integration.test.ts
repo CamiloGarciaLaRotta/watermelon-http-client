@@ -95,20 +95,23 @@ describe('when called with a GraphQL query', () => {
     delete process.env['INPUT_VARIABLES']
   })
 
-  it.skipWindows('should output something if a query was supplied', async () => {
-    const outputMock = jest.spyOn(core, 'setOutput')
-    const errorMock = jest.spyOn(Logger.prototype, 'error')
+  it.skipWindows(
+    'should output something if a query was supplied',
+    async () => {
+      const outputMock = jest.spyOn(core, 'setOutput')
+      const errorMock = jest.spyOn(Logger.prototype, 'error')
 
-    await run()
+      await run()
 
-    expect(outputMock.mock.calls).toEqual([
-      ['status', expect.anything()],
-      ['headers', expect.anything()],
-      ['response', expect.anything()]
-    ])
+      expect(outputMock.mock.calls).toEqual([
+        ['status', expect.anything()],
+        ['headers', expect.anything()],
+        ['response', expect.anything()]
+      ])
 
-    expect(errorMock).not.toHaveBeenCalled()
-  })
+      expect(errorMock).not.toHaveBeenCalled()
+    }
+  )
 })
 
 describe('when action fails without fail_fast', () => {
