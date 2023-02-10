@@ -36,9 +36,9 @@ In tests however, we have to manually generate this ENV vars to mock the expecte
 ```
 
 We have 3 levels of tests:
-- unit tests: [`__tests__/<file-name>.ts`]()  
+- unit tests: [`tests/<file-name>.ts`]()  
   We mock the network calls, as we only care about each exported function's behaviour.
-- integration tests: [`__tests__/integration.test.ts`]()  
+- integration tests: [`tests/integration.test.ts`]()  
   We don't mock the network calls, as we want to make sure the complete action works as expected.
 - end-to-end tests: [`.github/workflows`]()  
   We don't set up any fixtures. Instead, they use the action as any other person would: inside a workflow.

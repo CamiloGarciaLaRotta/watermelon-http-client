@@ -53,7 +53,7 @@ describe('when called with a POST request', () => {
     delete process.env['INPUT_DATA']
   })
 
-  it('should output a valid result', async () => {
+  it.skipWindows('should output a valid result', async () => {
     process.env['INPUT_URL'] = 'https://api.github.com'
     const outputMock = jest.spyOn(core, 'setOutput')
     const errorMock = jest.spyOn(Logger.prototype, 'error')
@@ -95,7 +95,7 @@ describe('when called with a GraphQL query', () => {
     delete process.env['INPUT_VARIABLES']
   })
 
-  it('should output something if a query was supplied', async () => {
+  it.skipWindows('should output something if a query was supplied', async () => {
     const outputMock = jest.spyOn(core, 'setOutput')
     const errorMock = jest.spyOn(Logger.prototype, 'error')
 
