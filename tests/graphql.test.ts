@@ -5,7 +5,7 @@ describe('calling graphqlPayloadFor', () => {
     const inputMutation = `mutation ($reaction:AddReactionInput!) {
       addReaction(input:$reaction) {
         reaction
-      } 
+      }
     }`
 
     const inputVariables = `{
