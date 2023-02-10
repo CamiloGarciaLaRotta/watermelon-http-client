@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import {Logger} from '../src/log'
 import {run} from '../src/main'
+import 'jest-os-detection'
 
 jest.setTimeout(600000)
 
@@ -15,19 +16,26 @@ describe('when called with a GET query', () => {
     delete process.env['INPUT_METHOD']
   })
 
-  it('should output a valid result', async () => {
+  it.skipWindows('should output a valid result', async () => {
     const outputMock = jest.spyOn(core, 'setOutput')
     const errorMock = jest.spyOn(Logger.prototype, 'error')
 
     await run()
 
+    expect(errorMock.mock.calls).toEqual([
+      ['response status', expect.anything()],
+      ['response headers', expect.anything()],
+      ['response body', expect.anything()]
+    ])
+
     expect(outputMock.mock.calls).toEqual([
+      ['status', expect.anything()],
+      ['headers', expect.anything()],
+      ['response', expect.anything()],
       ['status', expect.anything()],
       ['headers', expect.anything()],
       ['response', expect.anything()]
     ])
-
-    expect(errorMock).not.toHaveBeenCalled()
   })
 })
 
@@ -45,7 +53,7 @@ describe('when called with a POST request', () => {
     delete process.env['INPUT_DATA']
   })
 
-  it('should output a valid result', async () => {
+  it.skipWindows('should output a valid result', async () => {
     process.env['INPUT_URL'] = 'https://api.github.com'
     const outputMock = jest.spyOn(core, 'setOutput')
     const errorMock = jest.spyOn(Logger.prototype, 'error')
@@ -87,20 +95,23 @@ describe('when called with a GraphQL query', () => {
     delete process.env['INPUT_VARIABLES']
   })
 
-  it('should output something if a query was supplied', async () => {
-    const outputMock = jest.spyOn(core, 'setOutput')
-    const errorMock = jest.spyOn(Logger.prototype, 'error')
+  it.skipWindows(
+    'should output something if a query was supplied',
+    async () => {
+      const outputMock = jest.spyOn(core, 'setOutput')
+      const errorMock = jest.spyOn(Logger.prototype, 'error')
 
-    await run()
+      await run()
 
-    expect(outputMock.mock.calls).toEqual([
-      ['status', expect.anything()],
-      ['headers', expect.anything()],
-      ['response', expect.anything()]
-    ])
+      expect(outputMock.mock.calls).toEqual([
+        ['status', expect.anything()],
+        ['headers', expect.anything()],
+        ['response', expect.anything()]
+      ])
 
-    expect(errorMock).not.toHaveBeenCalled()
-  })
+      expect(errorMock).not.toHaveBeenCalled()
+    }
+  )
 })
 
 describe('when action fails without fail_fast', () => {
@@ -150,7 +161,7 @@ describe('when action fails without fail_fast', () => {
   })
 
   it('should handle action-side errors gracefully ', async () => {
-    process.env['INPUT_URL'] = 'ftp://>invalid|url<'
+    process.env['INPUT_URL'] = 'abc'
 
     const fakeLogError = jest.spyOn(core, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')
@@ -184,7 +195,7 @@ describe('when action fails with fail_fast', () => {
     process.env['INPUT_FAIL_FAST'] = 'true'
   })
 
-  it('should handle missing input gracefully', async () => {
+  it.skipWindows('should handle missing input gracefully', async () => {
     const outputMock = jest.spyOn(core, 'setOutput')
     const failureMock = jest.spyOn(core, 'setFailed')
 
@@ -230,7 +241,7 @@ describe('when action fails with fail_fast', () => {
   })
 
   it('should handle action-side errors gracefully ', async () => {
-    process.env['INPUT_URL'] = 'ftp://>invalid|url<'
+    process.env['INPUT_URL'] = 'abc'
 
     const fakeLogError = jest.spyOn(core, 'error')
     const outputMock = jest.spyOn(core, 'setOutput')

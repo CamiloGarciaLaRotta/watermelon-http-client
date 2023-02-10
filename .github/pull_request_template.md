@@ -1,4 +1,4 @@
-👋🏽thanks for contributing, here's a short checklist to complete:
+👋🏽 thanks for contributing, here's a short checklist to complete:
 
 - [ ] added tests for all the new/modified features
 - [ ] all CI checks are passing

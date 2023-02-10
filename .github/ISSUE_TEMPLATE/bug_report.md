@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "\U0001F41B"
+title: "🐛 some short title"
 labels: bug
 assignees: CamiloGarciaLaRotta, titoine54
 

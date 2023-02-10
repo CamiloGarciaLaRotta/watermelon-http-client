@@ -1,20 +1,14 @@
 import * as core from '@actions/core'
 import * as http from '../src/http'
 import {Logger} from '../src/log'
-import {Method} from 'axios'
 import {run} from '../src/main'
 
 describe('when running the action with valid inputs', () => {
-  jest.spyOn(http, 'request').mockImplementation(
-    (
-      url: string,
-      method: Method,
-      data?: string | undefined,
-      headers?: Object | undefined
-    ): Promise<[number, Object, Object]> => {
+  jest
+    .spyOn(http, 'request')
+    .mockImplementation(async (): Promise<[number, Object, Object]> => {
       return Promise.resolve([200, {some: 'response-headers'}, {some: 'JSON'}])
-    }
-  )
+    })
   const infoMock = jest.spyOn(Logger.prototype, 'info')
   const outputMock = jest.spyOn(core, 'setOutput')
 

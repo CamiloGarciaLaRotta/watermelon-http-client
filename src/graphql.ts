@@ -22,11 +22,14 @@ export function graphqlPayloadFor(
 ): string {
   const query = minify(rawQuery)
   const minifiedVariables = minify(rawVariables)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const variables = JSON.parse(minifiedVariables)
 
   if (operationName === '') {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return JSON.stringify({query, variables})
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return JSON.stringify({query, variables, operationName})
 }

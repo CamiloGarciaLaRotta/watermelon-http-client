@@ -2,7 +2,8 @@ import axios from 'axios'
 import {request} from '../src/http'
 
 describe('calling request', () => {
-  const fakeRequest = (axios.request = jest.fn().mockImplementation(x => {
+  const fakeRequest = (axios.request = jest.fn().mockImplementation(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     Promise.resolve({status: 200, data: {}, headers: {}})
   }))
 

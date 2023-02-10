@@ -23,8 +23,13 @@ export async function run(): Promise<void> {
     const operationName: string = getInput('operation_name')
     const failFast: boolean = getInput('fail_fast') === 'true'
 
+    if (!method) {
+      method = 'GET'
+    }
+
     let inputHeaders: Object
     if (isDefined(rawInputHeaders)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       inputHeaders = JSON.parse(rawInputHeaders)
     } else {
       inputHeaders = {}
@@ -40,6 +45,7 @@ export async function run(): Promise<void> {
       data = graphqlPayloadFor(graphql, variables, operationName)
 
       if (isEmpty(inputHeaders)) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         inputHeaders = {'Content-Type': 'application/json'}
       }
 
@@ -86,8 +92,18 @@ export async function run(): Promise<void> {
     setOutput('headers', `${responseHeaders}`)
     setOutput('response', `${response}`)
   } catch (error) {
-    setFailed(error.message)
+    if (error instanceof Error) {
+      setFailed(error.message)
+    } else {
+      setFailed(`Unexpected error: ${JSON.stringify(error)}`)
+    }
   }
 }
 
-run()
+run().catch(error => {
+  if (error instanceof Error) {
+    setFailed(error.message)
+  } else {
+    setFailed(`Unexpected error: ${JSON.stringify(error)}`)
+  }
+})
