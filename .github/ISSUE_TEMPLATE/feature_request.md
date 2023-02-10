@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[feat] "
+title: "💡 some short title"
 labels: enhancement
 assignees: CamiloGarciaLaRotta, titoine54
 
