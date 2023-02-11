@@ -10,7 +10,7 @@
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "test": "jest --clearCache && jest",
-    "all": "yarn build && yarn format && yarn format-check && yarn lint && yarn test"
+    "all": "yarn install && yarn build && yarn format && yarn format-check && yarn lint && yarn test"
   },
   "repository": {
     "type": "git",
