@@ -33,7 +33,7 @@
     "@types/jest": "^29.4.0",
     "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
+    "@typescript-eslint/parser": "^5.56.0",
     "@zeit/ncc": "^0.22.3",
     "acorn": ">=8.8.2",
     "eslint": "^8.34.0",
